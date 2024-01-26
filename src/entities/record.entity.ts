@@ -9,7 +9,7 @@ export class Record {
   material: string;
 
   @Column()
-  learning_time: number;
+  learningTime: number;
 
   @Column()
   description: string;
