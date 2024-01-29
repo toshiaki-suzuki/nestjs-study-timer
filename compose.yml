@@ -8,7 +8,7 @@ services:
       - 15432:5432
     volumes:
       - ./docker/postgres/init.d:/docker-entrypoint-initdb.d
-      - ./docker/postgres/pgdata:/var/lib/postgresql/data
+      - pgdata:/var/lib/postgresql/data
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
@@ -25,6 +25,11 @@ services:
       PGADMIN_DEFAULT_EMAIL: nestjs@example.com
       PGADMIN_DEFAULT_PASSWORD: password
     volumes:
-      - /var/lib/pgadmin
+      - pgadmin:/var/lib/pgadmin
     depends_on:
       - postgres
+
+volumes:
+  pgdata:
+  pgadmin:
+  
