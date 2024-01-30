@@ -10,6 +10,6 @@ export const AppDataConfig = new DataSource({
   password: 'postgres',
   database: 'postgres',
   synchronize: true, // true in only dev env
-  entities: ["src/entities/*.ts"],
-  migrations: ['src/migrations/*.ts'],
+  entities: ["src/entities/*.{js,ts}"],
+  migrations: ["src/migrations/*.{js,ts}"],
 });
