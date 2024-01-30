@@ -20,7 +20,7 @@ export class RecordsService {
 		const { material, learningTime, description } = createRecordDto;
 		const record = this.recordRepository.create({
 			material,
-			learningTime: learningTime,
+			learningTime,
 			description,
 		});
 		return await this.recordRepository.save(record);

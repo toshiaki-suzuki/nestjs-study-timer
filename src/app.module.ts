@@ -3,7 +3,6 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { DataSource } from 'typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { AppDataConfig } from './data-source';
 import { RecordsModule } from './records/records.module';
 
 @Module({
