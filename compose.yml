@@ -1,11 +1,22 @@
 version: '3.8'
 services:
-
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: api
+    ports:
+      - 3000:3000
+    volumes:
+      - ./:/app
+    depends_on:
+      - postgres
+    command: sh -c "./command/entrypoint.sh"
   postgres:
     image: postgres
     container_name: postgres
     ports:
-      - 15432:5432
+      - 5432:5432
     volumes:
       - ./docker/postgres/init.d:/docker-entrypoint-initdb.d
       - pgdata:/var/lib/postgresql/data
@@ -16,7 +27,6 @@ services:
       POSTGRES_DB: postgres
     hostname: postgres
     user: root
-
   pgadmin:
     image: dpage/pgadmin4
     ports:
@@ -28,7 +38,6 @@ services:
       - pgadmin:/var/lib/pgadmin
     depends_on:
       - postgres
-
 volumes:
   pgdata:
   pgadmin:

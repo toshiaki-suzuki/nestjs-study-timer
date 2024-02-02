@@ -8,8 +8,8 @@ import { RecordsModule } from './records/records.module';
 @Module({
   imports: [RecordsModule, TypeOrmModule.forRoot({
     type: 'postgres',
-    host: 'localhost',
-    port: 15432,
+    host: 'postgres',
+    port: 5432,
     username: 'postgres',
     password: 'postgres',
     database: 'postgres',

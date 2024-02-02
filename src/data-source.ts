@@ -4,8 +4,8 @@ import { Record } from "./entities/record.entity"
 
 export const AppDataConfig = new DataSource({
   type: 'postgres',
-  host: 'localhost',
-  port: 15432,
+  host: 'postgres',
+  port: 5432,
   username: 'postgres',
   password: 'postgres',
   database: 'postgres',
