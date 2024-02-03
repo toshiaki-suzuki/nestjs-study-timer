@@ -11,7 +11,7 @@ services:
       - ./:/app
     depends_on:
       - postgres
-    command: sh -c "./command/entrypoint.sh"
+    command: sh -c "./scripts/entrypoint.sh"
   postgres:
     image: postgres
     container_name: postgres

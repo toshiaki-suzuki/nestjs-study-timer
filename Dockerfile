@@ -1,3 +1,3 @@
 FROM node
 COPY . .
-RUN chmod +x ./command/entrypoint.sh
+RUN chmod +x ./scripts/entrypoint.sh
