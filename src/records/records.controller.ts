@@ -1,5 +1,5 @@
 import { Body, Controller, Get, Param, Post } from '@nestjs/common';
-import { Record } from 'src/entities/record.entity';
+import { Record } from '../entities/record.entity';
 import { CreateRecordDto } from './dto/create-record.dto';
 import { RecordsService } from './records.service';
 
