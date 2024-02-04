@@ -8,8 +8,5 @@ export const AppDataConfig = new DataSource({
   port: 5432,
   username: 'postgres',
   password: 'postgres',
-  database: 'postgres',
-  synchronize: true, // true in only dev env
-  entities: ["src/entities/*.{js,ts}"],
-  migrations: ["src/migrations/*.{js,ts}"],
+  database: 'postgres'
 });
