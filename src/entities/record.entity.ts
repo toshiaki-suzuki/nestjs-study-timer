@@ -15,8 +15,8 @@ export class Record {
   description: string;
 
   @Column()
-  createdAt: Date;
+  createdAt: string;
 
   @Column()
-  updatedAt: Date;
+  updatedAt: string;
 }

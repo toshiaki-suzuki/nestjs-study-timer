@@ -21,8 +21,8 @@ export class RecordsService {
 			material,
 			learningTime,
 			description,
-      createdAt: new Date(),
-      updatedAt: new Date(),
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
 		});
 		await this.recordRepository.save(record);
 		return record;

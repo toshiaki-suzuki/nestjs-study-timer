@@ -9,8 +9,8 @@ const mockRecord1 = {
   material: 'test-material',
   learningTime: 90,
   description: 'test-description',
-  createdAt: new Date(),
-  updatedAt: new Date()
+  createdAt: new Date().toISOString(),
+  updatedAt: new Date().toISOString(),
 };
 
 describe('RecordsService', () => {
