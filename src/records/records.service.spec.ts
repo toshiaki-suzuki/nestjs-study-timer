@@ -8,7 +8,9 @@ const mockRecord1 = {
   id: 1,
   material: 'test-material',
   learningTime: 90,
-  description: 'test-description'
+  description: 'test-description',
+  createdAt: new Date(),
+  updatedAt: new Date()
 };
 
 describe('RecordsService', () => {
@@ -32,16 +34,34 @@ describe('RecordsService', () => {
 
   describe('find', () => {
     it('正常系', async () => {
-      const expected = {
-        ...mockRecord1,
-        createdAt: '',
-        updatedAt: '',
-      };
+      const expected = { ...mockRecord1 };
 
       jest
         .spyOn(recordsRepository, 'findOneBy')
         .mockImplementation(async () => expected);
       const result = await recordsService.find(1);
+      expect(result).toEqual(expected);
+    });
+  });
+
+  describe('create', () => {
+    it('正常系', async () => {
+      const expected = {...mockRecord1 };
+
+      jest
+        .spyOn(recordsRepository, 'create')
+        .mockImplementation(() => expected);
+      jest
+        .spyOn(recordsRepository, 'save')
+        .mockImplementation(async () => expected);
+
+      const request = {
+        material: 'test-material',
+        learningTime: 90,
+        description: 'test-description'
+      }
+
+      const result = await recordsService.create(request);
       expect(result).toEqual(expected);
     });
   });
