@@ -33,7 +33,7 @@ describe('RecordsService', () => {
   });
 
   describe('find', () => {
-    it('正常系', async () => {
+    it('200', async () => {
       const expected = { ...mockRecord1 };
 
       jest
@@ -45,7 +45,7 @@ describe('RecordsService', () => {
   });
 
   describe('create', () => {
-    it('正常系', async () => {
+    it('201', async () => {
       const expected = {...mockRecord1 };
 
       jest
