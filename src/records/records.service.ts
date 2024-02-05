@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Record } from 'src/entities/record.entity';
 import { Repository } from 'typeorm';
@@ -12,7 +12,9 @@ export class RecordsService {
     @InjectRepository(Record) private readonly recordRepository: Repository<Record>,
   ) {}
   async find(id: number): Promise<Record> {
-    return await this.recordRepository.findOneBy({ id });
+    const found =  await this.recordRepository.findOneBy({ id });
+		if (!found) throw new NotFoundException();
+    return found;
   }
 
 	async create(createRecordDto: CreateRecordDto): Promise<Record> {

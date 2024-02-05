@@ -1,3 +1,4 @@
+import { NotFoundException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { Record } from 'src/entities/record.entity';
@@ -47,8 +48,9 @@ describe('RecordsService', () => {
       jest
         .spyOn(recordsRepository, 'findOneBy')
         .mockImplementation(async () => null);
-      const result = await recordsService.find(0);
-      expect(result).toBeNull();
+        await expect(recordsService.find(0)).rejects.toThrow(
+          NotFoundException,
+        );
     });
   });
 
