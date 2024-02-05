@@ -13,4 +13,10 @@ export class Record {
 
   @Column()
   description: string;
+
+  @Column()
+  createdAt: Date;
+
+  @Column()
+  updatedAt: Date;
 }
