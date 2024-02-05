@@ -42,6 +42,14 @@ describe('RecordsService', () => {
       const result = await recordsService.find(1);
       expect(result).toEqual(expected);
     });
+    
+    it('404', async () => {
+      jest
+        .spyOn(recordsRepository, 'findOneBy')
+        .mockImplementation(async () => null);
+      const result = await recordsService.find(0);
+      expect(result).toBeNull();
+    });
   });
 
   describe('create', () => {
