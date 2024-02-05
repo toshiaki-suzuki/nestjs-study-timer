@@ -6,7 +6,6 @@ import { AppDataConfig } from '../data-source';
 import { CreateRecordDto } from './dto/create-record.dto';
 
 const dataSource = AppDataConfig;
-const recordRepository = dataSource.getRepository(Record)
 @Injectable()
 export class RecordsService {
   constructor(
@@ -23,6 +22,7 @@ export class RecordsService {
 			learningTime,
 			description,
 		});
-		return await this.recordRepository.save(record);
+		await this.recordRepository.save(record);
+		return record;
 	}
 }
