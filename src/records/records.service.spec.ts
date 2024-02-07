@@ -217,4 +217,33 @@ describe('RecordsService', () => {
         );
     });
   });
+  
+  describe('remove', () => {
+    it('200 Remove a record', async () => {
+      const recordId = 1;
+      const expected = { ...mockRecord1 };
+  
+      jest
+        .spyOn(recordsService, 'find')
+        .mockImplementation(async () => expected);
+      jest
+        .spyOn(recordsRepository, 'remove')
+        .mockImplementation(async () => expected);
+  
+      const result = await recordsService.remove(recordId);
+      expect(result).toEqual(expected);
+    });
+  
+    it('404 Not Found', async () => {
+      const recordId = 0;
+  
+      jest
+        .spyOn(recordsService, 'find')
+        .mockImplementation(async () => null);
+  
+      await expect(recordsService.remove(recordId)).rejects.toThrow(
+        NotFoundException
+      );
+    });
+  });
 });
