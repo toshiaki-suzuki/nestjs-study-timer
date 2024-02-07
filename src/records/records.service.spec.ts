@@ -43,7 +43,7 @@ describe('RecordsService', () => {
   });
 
   describe('findAll', () => {
-    it('200', async () => {
+    it('200 Find All Records', async () => {
       const expected = [ mockRecord1, mockRecord2 ];
 
       jest
@@ -55,7 +55,7 @@ describe('RecordsService', () => {
   });
 
   describe('find', () => {
-    it('200', async () => {
+    it('200 Find a record', async () => {
       const expected = { ...mockRecord1 };
 
       jest
@@ -65,7 +65,7 @@ describe('RecordsService', () => {
       expect(result).toEqual(expected);
     });
     
-    it('404', async () => {
+    it('404 Not Found', async () => {
       jest
         .spyOn(recordsRepository, 'findOneBy')
         .mockImplementation(async () => null);
@@ -76,7 +76,7 @@ describe('RecordsService', () => {
   });
 
   describe('create', () => {
-    it('201', async () => {
+    it('201 Create a record', async () => {
       const expected = {...mockRecord1 };
 
       jest
