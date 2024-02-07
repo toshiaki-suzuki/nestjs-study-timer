@@ -114,7 +114,7 @@ describe('RecordsService', () => {
         learningTime: 900,
         description: 'updated-description',
         createdAt: beforeUpdated.createdAt,
-        updatedAt: new Date().toISOString(),
+        updatedAt: '2024-01-01T00:00:00.000Z',
       };
       
       const request: CreateRecordDto = {
@@ -126,6 +126,7 @@ describe('RecordsService', () => {
       jest
         .spyOn(recordsRepository, 'findOneBy')
         .mockImplementation(async () => beforeUpdated);
+      Date.prototype.toISOString = jest.fn(() => '2024-01-01T00:00:00.000Z');
       jest
         .spyOn(recordsRepository, 'save')
         .mockImplementation(async () => afterUpdated);
@@ -139,8 +140,8 @@ describe('RecordsService', () => {
         material: 'test-material',
         learningTime: 90,
         description: 'test-description',
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
+        createdAt: '2021-01-01T00:00:00.000Z',
+        updatedAt: '2021-01-01T00:00:00.000Z'
       };
 
       const afterUpdated = {
@@ -149,7 +150,7 @@ describe('RecordsService', () => {
         learningTime: 90,
         description: 'test-description',
         createdAt: beforeUpdated.createdAt,
-        updatedAt: new Date().toISOString(),
+        updatedAt: '2024-01-01T00:00:00.000Z',
       };
       
       const request: CreateRecordDto = {
@@ -161,6 +162,7 @@ describe('RecordsService', () => {
       jest
         .spyOn(recordsRepository, 'findOneBy')
         .mockImplementation(async () => beforeUpdated);
+      Date.prototype.toISOString = jest.fn(() => '2024-01-01T00:00:00.000Z');
       jest
         .spyOn(recordsRepository, 'save')
         .mockImplementation(async () => afterUpdated);
