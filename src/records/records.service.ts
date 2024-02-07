@@ -11,6 +11,11 @@ export class RecordsService {
   constructor(
     @InjectRepository(Record) private readonly recordRepository: Repository<Record>,
   ) {}
+	
+	async findAll(): Promise<Record[]> {
+		return await this.recordRepository.find();
+	}
+
   async find(id: number): Promise<Record> {
     const found =  await this.recordRepository.findOneBy({ id });
 		if (!found) throw new NotFoundException();

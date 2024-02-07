@@ -7,6 +7,11 @@ import { RecordsService } from './records.service';
 export class RecordsController {
   constructor(private readonly recordsService: RecordsService) {}
 
+  @Get()
+  findAll():Promise<Record[]> {
+    return this.recordsService.findAll(); 
+  }
+
   @Get(':id')
   find(@Param('id') id: number):Promise<Record> {
     return this.recordsService.find(id); 
