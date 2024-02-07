@@ -1,8 +1,9 @@
-import { NotFoundException } from '@nestjs/common';
+import { HttpException, HttpStatus, NotFoundException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { Record } from 'src/entities/record.entity';
 import { Repository } from 'typeorm';
+import { CreateRecordDto } from './dto/create-record.dto';
 import { RecordsService } from './records.service';
 
 const mockRecord1 = {
@@ -93,6 +94,125 @@ describe('RecordsService', () => {
 
       const result = await recordsService.create(request);
       expect(result).toEqual(expected);
+    });
+  });
+
+  describe('update', () => {
+    it('200 Update all propaties', async () => {
+      const beforeUpdated = {
+        id: 1,
+        material: 'test-material',
+        learningTime: 90,
+        description: 'test-description',
+        createdAt: '2021-01-01T00:00:00.000Z',
+        updatedAt: '2021-01-01T00:00:00.000Z'
+      };
+
+      const afterUpdated = {
+        id: 1,
+        material: 'updated-material',
+        learningTime: 900,
+        description: 'updated-description',
+        createdAt: beforeUpdated.createdAt,
+        updatedAt: new Date().toISOString(),
+      };
+      
+      const request: CreateRecordDto = {
+        material: afterUpdated.material,
+        learningTime: afterUpdated.learningTime,
+        description: afterUpdated.description
+      }
+
+      jest
+        .spyOn(recordsRepository, 'findOneBy')
+        .mockImplementation(async () => beforeUpdated);
+      jest
+        .spyOn(recordsRepository, 'save')
+        .mockImplementation(async () => afterUpdated);
+      const result = await recordsService.update(1, request);
+      expect(result).toEqual(afterUpdated);
+    });
+
+    it('200 Update a single propatiy', async () => {
+      const beforeUpdated = {
+        id: 1,
+        material: 'test-material',
+        learningTime: 90,
+        description: 'test-description',
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      };
+
+      const afterUpdated = {
+        id: 1,
+        material: 'updated-material',
+        learningTime: 90,
+        description: 'test-description',
+        createdAt: beforeUpdated.createdAt,
+        updatedAt: new Date().toISOString(),
+      };
+      
+      const request: CreateRecordDto = {
+        material: afterUpdated.material,
+        learningTime: afterUpdated.learningTime,
+        description: afterUpdated.description
+      }
+
+      jest
+        .spyOn(recordsRepository, 'findOneBy')
+        .mockImplementation(async () => beforeUpdated);
+      jest
+        .spyOn(recordsRepository, 'save')
+        .mockImplementation(async () => afterUpdated);
+      const result = await recordsService.update(1, request);
+      expect(result).toEqual(afterUpdated);
+    });
+
+    it('400 Update no propatiy', async () => {
+      const beforeUpdated = {
+        id: 1,
+        material: 'test-material',
+        learningTime: 90,
+        description: 'test-description',
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      };
+
+      const afterUpdated = {
+        id: 1,
+        material: 'test-material',
+        learningTime: 90,
+        description: 'test-description',
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      };
+      
+      const request: CreateRecordDto = {
+        material: afterUpdated.material,
+        learningTime: afterUpdated.learningTime,
+        description: afterUpdated.description
+      }
+
+      jest
+        .spyOn(recordsRepository, 'findOneBy')
+        .mockImplementation(async () => beforeUpdated);
+      await expect(recordsService.update(1, request)).rejects.toThrow(
+        new HttpException('No changes to update', HttpStatus.BAD_REQUEST),
+      );
+    });
+
+    it('404 Not Found', async () => {
+      const request: CreateRecordDto = {
+        material: 'test-material',
+        learningTime: 90,
+        description: 'test-description',
+      }
+      jest
+        .spyOn(recordsRepository, 'findOneBy')
+        .mockImplementation(async () => null);
+        await expect(recordsService.update(0, request)).rejects.toThrow(
+          NotFoundException,
+        );
     });
   });
 });
