@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common';
 import { Record } from '../entities/record.entity';
 import { CreateRecordDto } from './dto/create-record.dto';
 import { RecordsService } from './records.service';
@@ -20,5 +20,10 @@ export class RecordsController {
   @Post()
   create(@Body() createRecordDto: CreateRecordDto):Promise<Record> {
     return this.recordsService.create(createRecordDto);
+  }
+
+  @Put(':id')
+  update(@Param('id') id: number, @Body() createRecordDto: CreateRecordDto):Promise<Record> {
+    return this.recordsService.update(id, createRecordDto);
   }
 }
