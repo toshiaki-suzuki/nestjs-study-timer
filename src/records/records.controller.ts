@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
 import { Record } from '../entities/record.entity';
 import { CreateRecordDto } from './dto/create-record.dto';
 import { RecordsService } from './records.service';
@@ -25,5 +25,10 @@ export class RecordsController {
   @Put(':id')
   update(@Param('id') id: number, @Body() createRecordDto: CreateRecordDto):Promise<Record> {
     return this.recordsService.update(id, createRecordDto);
+  }
+
+  @Delete(':id')
+  delete(@Param('id') id: number):Promise<Record> {
+    return this.recordsService.remove(id);
   }
 }

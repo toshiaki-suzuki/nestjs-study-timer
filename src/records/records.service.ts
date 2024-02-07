@@ -59,4 +59,10 @@ export class RecordsService {
 		await this.recordRepository.save(record);
 		return record;
 	}
+
+	async remove(id: number): Promise<Record> {
+		const record = await this.find(id);
+		if (!record) throw new NotFoundException();
+		return await this.recordRepository.remove(record);
+	}
 }
