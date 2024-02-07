@@ -13,6 +13,14 @@ const mockRecord1 = {
   createdAt: new Date().toISOString(),
   updatedAt: new Date().toISOString(),
 };
+const mockRecord2 = {
+  id: 2,
+  material: 'test-material2',
+  learningTime: 90,
+  description: 'test-description2',
+  createdAt: new Date().toISOString(),
+  updatedAt: new Date().toISOString(),
+};
 
 describe('RecordsService', () => {
   let recordsService: RecordsService;
@@ -31,6 +39,18 @@ describe('RecordsService', () => {
 
     recordsService = module.get<RecordsService>(RecordsService);
     recordsRepository = module.get<Repository<Record>>(getRepositoryToken(Record));
+  });
+
+  describe('findAll', () => {
+    it('200', async () => {
+      const expected = [ mockRecord1, mockRecord2 ];
+
+      jest
+        .spyOn(recordsRepository, 'find')
+        .mockImplementation(async () => expected);
+      const result = await recordsService.findAll();
+      expect(result).toEqual(expected);
+    });
   });
 
   describe('find', () => {
