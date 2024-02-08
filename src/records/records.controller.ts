@@ -1,4 +1,12 @@
-import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Put,
+} from '@nestjs/common';
 import { Record } from '../entities/record.entity';
 import { CreateRecordDto } from './dto/create-record.dto';
 import { RecordsService } from './records.service';
@@ -8,27 +16,30 @@ export class RecordsController {
   constructor(private readonly recordsService: RecordsService) {}
 
   @Get()
-  findAll():Promise<Record[]> {
-    return this.recordsService.findAll(); 
+  async findAll(): Promise<Record[]> {
+    return await this.recordsService.findAll();
   }
 
   @Get(':id')
-  find(@Param('id') id: number):Promise<Record> {
-    return this.recordsService.find(id); 
+  async find(@Param('id') id: number): Promise<Record> {
+    return await this.recordsService.find(id);
   }
 
   @Post()
-  create(@Body() createRecordDto: CreateRecordDto):Promise<Record> {
-    return this.recordsService.create(createRecordDto);
+  async create(@Body() createRecordDto: CreateRecordDto): Promise<Record> {
+    return await this.recordsService.create(createRecordDto);
   }
 
   @Put(':id')
-  update(@Param('id') id: number, @Body() createRecordDto: CreateRecordDto):Promise<Record> {
-    return this.recordsService.update(id, createRecordDto);
+  async update(
+    @Param('id') id: number,
+    @Body() createRecordDto: CreateRecordDto,
+  ): Promise<Record> {
+    return await this.recordsService.update(id, createRecordDto);
   }
 
   @Delete(':id')
-  delete(@Param('id') id: number):Promise<Record> {
-    return this.recordsService.remove(id);
+  async delete(@Param('id') id: number): Promise<Record> {
+    return await this.recordsService.remove(id);
   }
 }
