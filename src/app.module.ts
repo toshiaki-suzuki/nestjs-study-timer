@@ -4,6 +4,7 @@ import { DataSource } from 'typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { RecordsModule } from './records/records.module';
+import { UsersModule } from './users/users.module';
 
 @Module({
   imports: [RecordsModule, TypeOrmModule.forRoot({
@@ -15,7 +16,7 @@ import { RecordsModule } from './records/records.module';
     database: 'postgres',
     synchronize: true, // true in only dev env
     autoLoadEntities: true,
-  })],
+  }), UsersModule],
   controllers: [AppController],
   providers: [AppService],
 })
