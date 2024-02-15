@@ -1,6 +1,5 @@
 import "reflect-metadata"
 import { DataSource } from "typeorm"
-import { Record } from "./entities/record.entity"
 
 export const AppDataConfig = new DataSource({
   type: 'postgres',
