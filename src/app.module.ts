@@ -7,16 +7,20 @@ import { RecordsModule } from './records/records.module';
 import { UsersModule } from './users/users.module';
 
 @Module({
-  imports: [RecordsModule, TypeOrmModule.forRoot({
-    type: 'postgres',
-    host: 'postgres',
-    port: 5432,
-    username: 'postgres',
-    password: 'postgres',
-    database: 'postgres',
-    synchronize: true, // true in only dev env
-    autoLoadEntities: true,
-  }), UsersModule],
+  imports: [
+    TypeOrmModule.forRoot({
+      type: 'postgres',
+      host: 'postgres',
+      port: 5432,
+      username: 'postgres',
+      password: 'postgres',
+      database: 'postgres',
+      synchronize: true, // true in only dev env
+      autoLoadEntities: true,
+    }),
+    RecordsModule,
+    UsersModule
+  ],
   controllers: [AppController],
   providers: [AppService],
 })
