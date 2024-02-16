@@ -18,6 +18,9 @@ export class User {
   birthday: string;
 
   @Column()
+  description: string;
+
+  @Column()
   createdAt: string;
 
   @Column()
