@@ -1,3 +1,4 @@
+import { NotFoundException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { User } from 'src/entities/user.entity';
@@ -46,6 +47,46 @@ describe('UsersController', () => {
     service = module.get<UsersService>(UsersService);
   });
 
+  describe('findAll', () => {
+    it('200 Find All Users', async () => {
+      const expected: User[] = [
+        { ...mockRecord1 },
+        { ...mockRecord2 }
+      ];
+
+      jest.spyOn(service, 'findAll').mockResolvedValue(expected);
+
+      const result = await controller.findAll();
+      expect(result).toEqual(expected);
+    });
+  });
+
+  describe('find', () => {
+    it('200 Get a Record', async () => {
+      const expectedRecord: User = mockRecord1;
+
+      jest
+      .spyOn(service, 'find')
+      .mockResolvedValue(expectedRecord);
+
+      const result = await controller.find(1);
+      expect(result).toEqual(expectedRecord);
+    });
+
+    it('404 Not Found', async () => {
+      const expectedResult = {
+        message: "Not Found",
+        statusCode: 404
+      };
+  
+      jest
+        .spyOn(service, 'find')
+        .mockRejectedValue(new NotFoundException(expectedResult.message));
+  
+      await expect(controller.find(0)).rejects.toThrow(NotFoundException);
+    });
+  });
+
   describe('create', () => {
     it('200 Create a new record', async () => {
       const createUserDto = {
@@ -68,20 +109,6 @@ describe('UsersController', () => {
 
       const result = await controller.create(createUserDto);
       expect(result).toEqual(expectedUser);
-    });
-  });
-
-  describe('findAll', () => {
-    it('200 Find All Users', async () => {
-      const expected: User[] = [
-        { ...mockRecord1 },
-        { ...mockRecord2 }
-      ];
-
-      jest.spyOn(service, 'findAll').mockResolvedValue(expected);
-
-      const result = await controller.findAll();
-      expect(result).toEqual(expected);
     });
   });
 });

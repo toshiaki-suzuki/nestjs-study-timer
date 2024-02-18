@@ -1,3 +1,4 @@
+import { NotFoundException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { User } from 'src/entities/user.entity';
@@ -57,6 +58,27 @@ describe('UsersService', () => {
       const result = await service.findAll();
 
       expect(result).toEqual(expected);
+    });
+  });
+
+  describe('find', () => {
+    it('200 Find a record', async () => {
+      const expected = { ...mockRecord1 };
+
+      jest
+        .spyOn(repository, 'findOneBy')
+        .mockImplementation(async () => expected);
+      const result = await service.find(1);
+      expect(result).toEqual(expected);
+    });
+    
+    it('404 Not Found', async () => {
+      jest
+        .spyOn(repository, 'findOneBy')
+        .mockImplementation(async () => null);
+        await expect(service.find(0)).rejects.toThrow(
+          NotFoundException,
+        );
     });
   });
 
