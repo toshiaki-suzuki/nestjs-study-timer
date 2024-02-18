@@ -9,6 +9,10 @@ export class UsersService {
   constructor(
     @InjectRepository(User) private readonly repository: Repository<User>,
   ) {}
+
+  async findAll(): Promise<User[]> {
+    return this.repository.find();
+  }
   
   async create(createUserDto: CreateUserDto): Promise<User> {
     const { name, email, password, description, birthday } = createUserDto;

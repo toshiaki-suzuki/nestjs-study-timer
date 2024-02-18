@@ -15,6 +15,16 @@ const mockRecord1 = {
   createdAt: new Date().toISOString(),
   updatedAt: new Date().toISOString()
 };
+const mockRecord2 = {
+  id: 2,
+  name: 'test2',
+  email: 'test2@example.com',
+  password: 'password2',
+  description: 'Lorem ipsum2',
+  birthday: new Date('1991-01-01').toISOString(),
+  createdAt: new Date().toISOString(),
+  updatedAt: new Date().toISOString()
+};
 
 describe('UsersService', () => {
   let service: UsersService;
@@ -33,6 +43,21 @@ describe('UsersService', () => {
 
     service = module.get<UsersService>(UsersService);
     repository = module.get<Repository<User>>(getRepositoryToken(User));
+  });
+
+  describe('findAll', () => {
+    it('200 Find All Users', async () => {
+      const expected: User[] = [
+        { ...mockRecord1 },
+        { ...mockRecord2 }
+      ];
+
+      jest.spyOn(repository, 'find').mockResolvedValue(expected);
+
+      const result = await service.findAll();
+
+      expect(result).toEqual(expected);
+    });
   });
 
   describe('create', () => {

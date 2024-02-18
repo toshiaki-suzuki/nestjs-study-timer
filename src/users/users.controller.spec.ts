@@ -5,7 +5,7 @@ import { Repository } from 'typeorm';
 import { UsersController } from './users.controller';
 import { UsersService } from './users.service';
 
-const mockUser1 = {
+const mockRecord1 = {
   id: 1,
   name: 'test',
   email: 'test@example.com',
@@ -15,7 +15,16 @@ const mockUser1 = {
   createdAt: new Date().toISOString(),
   updatedAt: new Date().toISOString()
 };
-
+const mockRecord2 = {
+  id: 2,
+  name: 'test2',
+  email: 'test2@example.com',
+  password: 'password2',
+  description: 'Lorem ipsum2',
+  birthday: new Date('1991-01-01').toISOString(),
+  createdAt: new Date().toISOString(),
+  updatedAt: new Date().toISOString()
+};
 
 describe('UsersController', () => {
   let controller: UsersController;
@@ -59,6 +68,20 @@ describe('UsersController', () => {
 
       const result = await controller.create(createUserDto);
       expect(result).toEqual(expectedUser);
+    });
+  });
+
+  describe('findAll', () => {
+    it('200 Find All Users', async () => {
+      const expected: User[] = [
+        { ...mockRecord1 },
+        { ...mockRecord2 }
+      ];
+
+      jest.spyOn(service, 'findAll').mockResolvedValue(expected);
+
+      const result = await controller.findAll();
+      expect(result).toEqual(expected);
     });
   });
 });
