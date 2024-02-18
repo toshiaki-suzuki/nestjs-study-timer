@@ -68,32 +68,19 @@ describe('RecordsController', () => {
       const result = await controller.find(1);
       expect(result).toEqual(expectedRecord);
     });
-  });
 
-  describe('find', () => {
-    it('200 Get a Record', async () => {
-      const expectedRecord: Record = mockRecord1;
-
+    it('404 Not Found', async () => {
+      const expectedResult = {
+        message: "Not Found",
+        statusCode: 404
+      };
+  
       jest
-      .spyOn(service, 'find')
-      .mockResolvedValue(expectedRecord);
-
-      const result = await controller.find(1);
-      expect(result).toEqual(expectedRecord);
+        .spyOn(service, 'find')
+        .mockRejectedValue(new NotFoundException(expectedResult.message));
+  
+      await expect(controller.find(0)).rejects.toThrow(NotFoundException);
     });
-  });
-
-  it('404 Not Found', async () => {
-    const expectedResult = {
-      message: "Not Found",
-      statusCode: 404
-    };
-
-    jest
-      .spyOn(service, 'find')
-      .mockRejectedValue(new NotFoundException(expectedResult.message));
-
-    await expect(controller.find(0)).rejects.toThrow(NotFoundException);
   });
 
   describe('create', () => {
