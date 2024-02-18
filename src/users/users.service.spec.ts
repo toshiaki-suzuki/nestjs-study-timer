@@ -6,7 +6,7 @@ import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UsersService } from './users.service';
 
-const mockRecord1 = {
+const mockData1 = {
   id: 1,
   name: 'test',
   email: 'test@example.com',
@@ -16,7 +16,7 @@ const mockRecord1 = {
   createdAt: new Date().toISOString(),
   updatedAt: new Date().toISOString()
 };
-const mockRecord2 = {
+const mockData2 = {
   id: 2,
   name: 'test2',
   email: 'test2@example.com',
@@ -49,8 +49,8 @@ describe('UsersService', () => {
   describe('findAll', () => {
     it('200 Find All Users', async () => {
       const expected: User[] = [
-        { ...mockRecord1 },
-        { ...mockRecord2 }
+        { ...mockData1 },
+        { ...mockData2 }
       ];
 
       jest.spyOn(repository, 'find').mockResolvedValue(expected);
@@ -63,7 +63,7 @@ describe('UsersService', () => {
 
   describe('find', () => {
     it('200 Find a record', async () => {
-      const expected = { ...mockRecord1 };
+      const expected = { ...mockData1 };
 
       jest
         .spyOn(repository, 'findOneBy')
@@ -84,7 +84,7 @@ describe('UsersService', () => {
 
   describe('create', () => {
     it('201 Create a user', async () => {
-      const expected = {...mockRecord1 };
+      const expected = {...mockData1 };
 
       jest
         .spyOn(repository, 'create')
@@ -239,7 +239,7 @@ describe('UsersService', () => {
   describe('delete', () => {
     it('200 Delete a record', async () => {
       const recordId = 1;
-      const expected = { ...mockRecord1 };
+      const expected = { ...mockData1 };
   
       jest
         .spyOn(service, 'find')

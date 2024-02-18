@@ -6,7 +6,7 @@ import { Record } from '../entities/record.entity';
 import { RecordsController } from './records.controller';
 import { RecordsService } from './records.service';
 
-const mockRecord1 = {
+const mockData1 = {
   id: 1,
   material: 'test-material',
   learningTime: 90,
@@ -14,7 +14,7 @@ const mockRecord1 = {
   createdAt: new Date().toISOString(),
   updatedAt: new Date().toISOString(),
 };
-const mockRecord2 = {
+const mockData2 = {
   id: 2,
   material: 'test-material2',
   learningTime: 90,
@@ -46,7 +46,7 @@ describe('RecordsController', () => {
 
   describe('findAll', () => {
     it('200 Get All Records', async () => {
-      const expectedRecords: Record[] = [mockRecord1, mockRecord2];
+      const expectedRecords: Record[] = [mockData1, mockData2];
 
       jest
       .spyOn(service, 'findAll')
@@ -59,7 +59,7 @@ describe('RecordsController', () => {
 
   describe('find', () => {
     it('200 Get a Record', async () => {
-      const expectedRecord: Record = mockRecord1;
+      const expectedRecord: Record = mockData1;
 
       jest
       .spyOn(service, 'find')
@@ -149,7 +149,7 @@ describe('RecordsController', () => {
 
   describe('delete', () => {
     it('200 Delete a record', async () => {
-      const expectedRecord: Record = mockRecord1;
+      const expectedRecord: Record = mockData1;
 
       jest
         .spyOn(service, 'remove')

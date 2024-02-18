@@ -6,7 +6,7 @@ import { Repository } from 'typeorm';
 import { CreateRecordDto } from './dto/create-record.dto';
 import { RecordsService } from './records.service';
 
-const mockRecord1 = {
+const mockData1 = {
   id: 1,
   material: 'test-material',
   learningTime: 90,
@@ -14,7 +14,7 @@ const mockRecord1 = {
   createdAt: new Date().toISOString(),
   updatedAt: new Date().toISOString(),
 };
-const mockRecord2 = {
+const mockData2 = {
   id: 2,
   material: 'test-material2',
   learningTime: 90,
@@ -44,7 +44,7 @@ describe('RecordsService', () => {
 
   describe('findAll', () => {
     it('200 Find All Records', async () => {
-      const expected = [ mockRecord1, mockRecord2 ];
+      const expected = [ mockData1, mockData2 ];
 
       jest
         .spyOn(recordsRepository, 'find')
@@ -56,7 +56,7 @@ describe('RecordsService', () => {
 
   describe('find', () => {
     it('200 Find a record', async () => {
-      const expected = { ...mockRecord1 };
+      const expected = { ...mockData1 };
 
       jest
         .spyOn(recordsRepository, 'findOneBy')
@@ -77,7 +77,7 @@ describe('RecordsService', () => {
 
   describe('create', () => {
     it('201 Create a record', async () => {
-      const expected = {...mockRecord1 };
+      const expected = {...mockData1 };
 
       jest
         .spyOn(recordsRepository, 'create')
@@ -221,7 +221,7 @@ describe('RecordsService', () => {
   describe('remove', () => {
     it('200 Remove a record', async () => {
       const recordId = 1;
-      const expected = { ...mockRecord1 };
+      const expected = { ...mockData1 };
   
       jest
         .spyOn(recordsService, 'find')

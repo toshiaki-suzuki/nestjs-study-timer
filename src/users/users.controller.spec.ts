@@ -6,7 +6,7 @@ import { Repository } from 'typeorm';
 import UsersController from './users.controller';
 import { UsersService } from './users.service';
 
-const mockRecord1 = {
+const mockData1 = {
   id: 1,
   name: 'test',
   email: 'test@example.com',
@@ -16,7 +16,7 @@ const mockRecord1 = {
   createdAt: new Date().toISOString(),
   updatedAt: new Date().toISOString()
 };
-const mockRecord2 = {
+const mockData2 = {
   id: 2,
   name: 'test2',
   email: 'test2@example.com',
@@ -50,8 +50,8 @@ describe('UsersController', () => {
   describe('findAll', () => {
     it('200 Find All Users', async () => {
       const expected: User[] = [
-        { ...mockRecord1 },
-        { ...mockRecord2 }
+        { ...mockData1 },
+        { ...mockData2 }
       ];
 
       jest.spyOn(service, 'findAll').mockResolvedValue(expected);
@@ -63,7 +63,7 @@ describe('UsersController', () => {
 
   describe('find', () => {
     it('200 Get a Record', async () => {
-      const expectedRecord: User = mockRecord1;
+      const expectedRecord: User = mockData1;
 
       jest
       .spyOn(service, 'find')
@@ -124,7 +124,7 @@ describe('UsersController', () => {
       const expected: User = {
         id: 1,
         ...updateUserDto,
-        createdAt: mockRecord1.createdAt,
+        createdAt: mockData1.createdAt,
         updatedAt: new Date().toISOString(),
       };
 
@@ -159,7 +159,7 @@ describe('UsersController', () => {
 
   describe('delete', () => {
     it('200 Delete a record', async () => {
-      const expected: User = mockRecord1;
+      const expected: User = mockData1;
 
       jest
         .spyOn(service, 'delete')
