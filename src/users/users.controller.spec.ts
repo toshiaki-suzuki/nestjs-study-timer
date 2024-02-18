@@ -111,4 +111,50 @@ describe('UsersController', () => {
       expect(result).toEqual(expectedUser);
     });
   });
+
+  describe('update', () => {
+    it('200 Update a record', async () => {
+      const updateUserDto = {
+        name: 'updated',
+        email: 'updated@example.com',
+        password: 'updatedpassword',
+        description: 'updated description',
+        birthday: new Date('2000-01-01').toISOString(),
+      };
+      const expected: User = {
+        id: 1,
+        ...updateUserDto,
+        createdAt: mockRecord1.createdAt,
+        updatedAt: new Date().toISOString(),
+      };
+
+      jest
+        .spyOn(service, 'update')
+        .mockResolvedValue(expected);
+
+      const result = await controller.update(1, updateUserDto);
+      expect(result).toEqual(expected);
+    });
+
+    it('404 Not Found', async () => {
+      const updateUserDto = {
+        name: 'test',
+        email: 'test@example.com',
+        password: 'password',
+        description: 'Lorem ipsum',
+        birthday: new Date('1990-01-01').toISOString(),
+      };
+      const expectedResult = {
+        message: "Not Found",
+        statusCode: 404
+      };
+
+      jest
+        .spyOn(service, 'update')
+        .mockRejectedValue(new NotFoundException(expectedResult.message));
+
+      await expect(controller.update(0, updateUserDto)).rejects.toThrow(NotFoundException);
+    });
+  });
+
 });

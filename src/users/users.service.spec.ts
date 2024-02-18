@@ -1,4 +1,4 @@
-import { NotFoundException } from '@nestjs/common';
+import { HttpException, HttpStatus, NotFoundException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { User } from 'src/entities/user.entity';
@@ -103,6 +103,136 @@ describe('UsersService', () => {
 
       const result = await service.create(request);
       expect(result).toEqual(expected);
+    });
+  });
+
+  describe('update', () => {
+    it('200 Update all propaties', async () => {
+      const beforeUpdated = {
+        id: 1,
+        name: 'test',
+        email: 'test@example.com',
+        password: 'password',
+        description: 'Lorem ipsum',
+        birthday: new Date('1990-01-01').toISOString(),
+        createdAt: '2021-01-01T00:00:00.000Z',
+        updatedAt: '2021-01-01T00:00:00.000Z'
+      };
+
+      const afterUpdated = {
+        id: 1,
+        name: 'updated',
+        email: 'updated@example.com',
+        password: 'updatedpassword',
+        description: 'updated description',
+        birthday: new Date('2000-12-31').toISOString(),
+        createdAt: beforeUpdated.createdAt,
+        updatedAt: '2024-01-01T00:00:00.000Z',
+      };
+      
+      const request: CreateUserDto = {
+        name: afterUpdated.name,
+        email: afterUpdated.email,
+        password: afterUpdated.password,
+        description: afterUpdated.description,
+        birthday: afterUpdated.birthday,
+      }
+
+      jest
+        .spyOn(repository, 'findOneBy')
+        .mockImplementation(async () => beforeUpdated);
+      Date.prototype.toISOString = jest.fn(() => '2024-01-01T00:00:00.000Z');
+      jest
+        .spyOn(repository, 'save')
+        .mockImplementation(async () => afterUpdated);
+      const result = await service.update(1, request);
+      expect(result).toEqual(afterUpdated);
+    });
+
+    it('200 Update a single propatiy', async () => {
+      const beforeUpdated = {
+        id: 1,
+        name: 'test',
+        email: 'test@example.com',
+        password: 'password',
+        description: 'Lorem ipsum',
+        birthday: new Date('1990-01-01').toISOString(),
+        createdAt: '2021-01-01T00:00:00.000Z',
+        updatedAt: '2021-01-01T00:00:00.000Z'
+      };
+
+      const afterUpdated = {
+        id: 1,
+        name: 'updated',
+        email: 'test@example.com',
+        password: 'password',
+        description: 'Lorem ipsum',
+        birthday: new Date('1990-01-01').toISOString(),
+        createdAt: beforeUpdated.createdAt,
+        updatedAt: '2024-01-01T00:00:00.000Z',
+      };
+      
+      const request: CreateUserDto = {
+        name: afterUpdated.name,
+        email: afterUpdated.email,
+        password: afterUpdated.password,
+        description: afterUpdated.description,
+        birthday: afterUpdated.birthday,
+      }
+
+      jest
+        .spyOn(repository, 'findOneBy')
+        .mockImplementation(async () => beforeUpdated);
+      Date.prototype.toISOString = jest.fn(() => '2024-01-01T00:00:00.000Z');
+      jest
+        .spyOn(repository, 'save')
+        .mockImplementation(async () => afterUpdated);
+      const result = await service.update(1, request);
+      expect(result).toEqual(afterUpdated);
+    });
+
+    it('400 Update no propatiy', async () => {
+      const beforeUpdated = {
+        id: 1,
+        name: 'test',
+        email: 'test@example.com',
+        password: 'password',
+        description: 'Lorem ipsum',
+        birthday: '1990-01-01T00:00:00.000Z',
+        createdAt: '2021-01-01T00:00:00.000Z',
+        updatedAt: '2021-01-01T00:00:00.000Z'
+      };
+      
+      const request: CreateUserDto = {
+        name: beforeUpdated.name,
+        email: beforeUpdated.email,
+        password: beforeUpdated.password,
+        description: beforeUpdated.description,
+        birthday: beforeUpdated.birthday,
+      }
+
+      jest
+        .spyOn(repository, 'findOneBy')
+        .mockImplementation(async () => beforeUpdated);
+      await expect(service.update(1, request)).rejects.toThrow(
+        new HttpException('No changes to update', HttpStatus.BAD_REQUEST),
+      );
+    });
+
+    it('404 Not Found', async () => {
+      const request: CreateUserDto = {
+        name: 'test',
+        email: 'test@example.com',
+        password: 'password',
+        description: 'Lorem ipsum',
+        birthday: new Date('1990-01-01').toISOString(),
+      }
+      jest
+        .spyOn(repository, 'findOneBy')
+        .mockImplementation(async () => null);
+        await expect(service.update(0, request)).rejects.toThrow(
+          NotFoundException,
+        );
     });
   });
 });
