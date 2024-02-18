@@ -3,7 +3,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { User } from 'src/entities/user.entity';
 import { Repository } from 'typeorm';
-import { UsersController } from './users.controller';
+import UsersController from './users.controller';
 import { UsersService } from './users.service';
 
 const mockRecord1 = {
@@ -157,4 +157,29 @@ describe('UsersController', () => {
     });
   });
 
+  describe('delete', () => {
+    it('200 Delete a record', async () => {
+      const expected: User = mockRecord1;
+
+      jest
+        .spyOn(service, 'delete')
+        .mockResolvedValue(expected);
+
+      const result = await controller.delete(1);
+      expect(result).toEqual(expected);
+    });
+
+    it('404 Not Found', async () => {
+      const expectedResult = {
+        message: "Not Found",
+        statusCode: 404
+      };
+
+      jest
+        .spyOn(service, 'delete')
+        .mockRejectedValue(new NotFoundException(expectedResult.message));
+
+      await expect(controller.delete(0)).rejects.toThrow(NotFoundException);
+    });
+  });
 });

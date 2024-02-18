@@ -235,4 +235,33 @@ describe('UsersService', () => {
         );
     });
   });
+
+  describe('delete', () => {
+    it('200 Delete a record', async () => {
+      const recordId = 1;
+      const expected = { ...mockRecord1 };
+  
+      jest
+        .spyOn(service, 'find')
+        .mockImplementation(async () => expected);
+      jest
+        .spyOn(repository, 'remove')
+        .mockImplementation(async () => expected);
+  
+      const result = await service.delete(recordId);
+      expect(result).toEqual(expected);
+    });
+  
+    it('404 Not Found', async () => {
+      const recordId = 0;
+  
+      jest
+        .spyOn(service, 'find')
+        .mockImplementation(async () => null);
+  
+      await expect(service.delete(recordId)).rejects.toThrow(
+        NotFoundException
+      );
+    });
+  });
 });

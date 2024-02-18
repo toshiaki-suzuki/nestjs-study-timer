@@ -74,4 +74,10 @@ export class UsersService {
 		await this.repository.save(record);
 		return record;
 	}
+
+	async delete(id: number): Promise<User> {
+		const user = await this.find(id);
+		if (!user) throw new NotFoundException();
+		return await this.repository.remove(user);
+	}
 }

@@ -1,11 +1,11 @@
-import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
 import { User } from 'src/entities/user.entity';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UsersService } from './users.service';
 
 
 @Controller('users')
-export class UsersController {
+export default class UsersController {
   constructor(private readonly service: UsersService) {}
 
   @Get()
@@ -29,5 +29,10 @@ export class UsersController {
     @Body() createUserDto: CreateUserDto,
   ): Promise<User> {
     return await this.service.update(id, createUserDto);
+  }
+
+  @Delete(':id')
+  async delete(@Param('id') id: number): Promise<User> {
+    return await this.service.delete(id);
   }
 }
