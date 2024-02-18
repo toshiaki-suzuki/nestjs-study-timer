@@ -88,7 +88,7 @@ describe('UsersController', () => {
   });
 
   describe('create', () => {
-    it('200 Create a new record', async () => {
+    it('201 Create a new record', async () => {
       const createUserDto = {
         name: 'test',
         email: 'test@example.com',
