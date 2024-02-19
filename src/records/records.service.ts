@@ -9,29 +9,29 @@ const dataSource = AppDataConfig;
 @Injectable()
 export class RecordsService {
   constructor(
-    @InjectRepository(Record) private readonly recordRepository: Repository<Record>,
+    @InjectRepository(Record) private readonly repository: Repository<Record>,
   ) {}
 
 	async findAll(): Promise<Record[]> {
-		return await this.recordRepository.find();
+		return await this.repository.find();
 	}
 
   async find(id: number): Promise<Record> {
-    const found =  await this.recordRepository.findOneBy({ id });
+    const found =  await this.repository.findOneBy({ id });
 		if (!found) throw new NotFoundException();
     return found;
   }
 
 	async create(createRecordDto: CreateRecordDto): Promise<Record> {
 		const { material, learningTime, description } = createRecordDto;
-		const record = this.recordRepository.create({
+		const record = this.repository.create({
 			material,
 			learningTime,
 			description,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
 		});
-		await this.recordRepository.save(record);
+		await this.repository.save(record);
 		return record;
 	}
 
@@ -56,13 +56,13 @@ export class RecordsService {
 			throw new HttpException('No changes to update', HttpStatus.BAD_REQUEST);
 		}
 	
-		await this.recordRepository.save(record);
+		await this.repository.save(record);
 		return record;
 	}
 
 	async remove(id: number): Promise<Record> {
 		const record = await this.find(id);
 		if (!record) throw new NotFoundException();
-		return await this.recordRepository.remove(record);
+		return await this.repository.remove(record);
 	}
 }
