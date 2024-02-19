@@ -16,7 +16,7 @@ export class RecordsService {
 		return await this.repository.find();
 	}
 
-  async find(id: number): Promise<Record> {
+  async find(id: string): Promise<Record> {
     const found =  await this.repository.findOneBy({ id });
 		if (!found) throw new NotFoundException();
     return found;
@@ -35,7 +35,7 @@ export class RecordsService {
 		return record;
 	}
 
-	async update(id: number, createRecordDto: CreateRecordDto): Promise<Record> {
+	async update(id: string, createRecordDto: CreateRecordDto): Promise<Record> {
 		const { material, learningTime, description } = createRecordDto;
 		const record = await this.find(id);
 		if (!record) throw new NotFoundException();
@@ -60,7 +60,7 @@ export class RecordsService {
 		return record;
 	}
 
-	async remove(id: number): Promise<Record> {
+	async remove(id: string): Promise<Record> {
 		const record = await this.find(id);
 		if (!record) throw new NotFoundException();
 		return await this.repository.remove(record);

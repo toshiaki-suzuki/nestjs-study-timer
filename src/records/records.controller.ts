@@ -21,7 +21,7 @@ export class RecordsController {
   }
 
   @Get(':id')
-  async find(@Param('id') id: number): Promise<Record> {
+  async find(@Param('id') id: string): Promise<Record> {
     return await this.recordsService.find(id);
   }
 
@@ -32,14 +32,14 @@ export class RecordsController {
 
   @Put(':id')
   async update(
-    @Param('id') id: number,
+    @Param('id') id: string,
     @Body() createRecordDto: CreateRecordDto,
   ): Promise<Record> {
     return await this.recordsService.update(id, createRecordDto);
   }
 
   @Delete(':id')
-  async delete(@Param('id') id: number): Promise<Record> {
+  async delete(@Param('id') id: string): Promise<Record> {
     return await this.recordsService.remove(id);
   }
 }

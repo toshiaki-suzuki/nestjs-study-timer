@@ -14,7 +14,7 @@ export default class UsersController {
   }
 
   @Get(':id')
-  async find(@Param('id') id: number): Promise<User> {
+  async find(@Param('id') id: string): Promise<User> {
     return await this.service.find(id);
   }
   
@@ -25,14 +25,14 @@ export default class UsersController {
 
   @Put(':id')
   async update(
-    @Param('id') id: number,
+    @Param('id') id: string,
     @Body() createUserDto: CreateUserDto,
   ): Promise<User> {
     return await this.service.update(id, createUserDto);
   }
 
   @Delete(':id')
-  async delete(@Param('id') id: number): Promise<User> {
+  async delete(@Param('id') id: string): Promise<User> {
     return await this.service.delete(id);
   }
 }
