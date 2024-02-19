@@ -24,8 +24,8 @@ const mockData2 = {
 };
 
 describe('RecordsService', () => {
-  let recordsService: RecordsService;
-  let recordsRepository: Repository<Record>;
+  let service: RecordsService;
+  let repository: Repository<Record>;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -38,8 +38,8 @@ describe('RecordsService', () => {
       ],
     }).compile();
 
-    recordsService = module.get<RecordsService>(RecordsService);
-    recordsRepository = module.get<Repository<Record>>(getRepositoryToken(Record));
+    service = module.get<RecordsService>(RecordsService);
+    repository = module.get<Repository<Record>>(getRepositoryToken(Record));
   });
 
   describe('findAll', () => {
@@ -47,9 +47,9 @@ describe('RecordsService', () => {
       const expected = [ mockData1, mockData2 ];
 
       jest
-        .spyOn(recordsRepository, 'find')
+        .spyOn(repository, 'find')
         .mockImplementation(async () => expected);
-      const result = await recordsService.findAll();
+      const result = await service.findAll();
       expect(result).toEqual(expected);
     });
   });
@@ -59,17 +59,17 @@ describe('RecordsService', () => {
       const expected = { ...mockData1 };
 
       jest
-        .spyOn(recordsRepository, 'findOneBy')
+        .spyOn(repository, 'findOneBy')
         .mockImplementation(async () => expected);
-      const result = await recordsService.find(1);
+      const result = await service.find(1);
       expect(result).toEqual(expected);
     });
     
     it('404 Not Found', async () => {
       jest
-        .spyOn(recordsRepository, 'findOneBy')
+        .spyOn(repository, 'findOneBy')
         .mockImplementation(async () => null);
-        await expect(recordsService.find(0)).rejects.toThrow(
+        await expect(service.find(0)).rejects.toThrow(
           NotFoundException,
         );
     });
@@ -80,10 +80,10 @@ describe('RecordsService', () => {
       const expected = {...mockData1 };
 
       jest
-        .spyOn(recordsRepository, 'create')
+        .spyOn(repository, 'create')
         .mockImplementation(() => expected);
       jest
-        .spyOn(recordsRepository, 'save')
+        .spyOn(repository, 'save')
         .mockImplementation(async () => expected);
 
       const request = {
@@ -92,7 +92,7 @@ describe('RecordsService', () => {
         description: 'test-description'
       }
 
-      const result = await recordsService.create(request);
+      const result = await service.create(request);
       expect(result).toEqual(expected);
     });
   });
@@ -124,13 +124,13 @@ describe('RecordsService', () => {
       }
 
       jest
-        .spyOn(recordsRepository, 'findOneBy')
+        .spyOn(repository, 'findOneBy')
         .mockImplementation(async () => beforeUpdated);
       Date.prototype.toISOString = jest.fn(() => '2024-01-01T00:00:00.000Z');
       jest
-        .spyOn(recordsRepository, 'save')
+        .spyOn(repository, 'save')
         .mockImplementation(async () => afterUpdated);
-      const result = await recordsService.update(1, request);
+      const result = await service.update(1, request);
       expect(result).toEqual(afterUpdated);
     });
 
@@ -160,13 +160,13 @@ describe('RecordsService', () => {
       }
 
       jest
-        .spyOn(recordsRepository, 'findOneBy')
+        .spyOn(repository, 'findOneBy')
         .mockImplementation(async () => beforeUpdated);
       Date.prototype.toISOString = jest.fn(() => '2024-01-01T00:00:00.000Z');
       jest
-        .spyOn(recordsRepository, 'save')
+        .spyOn(repository, 'save')
         .mockImplementation(async () => afterUpdated);
-      const result = await recordsService.update(1, request);
+      const result = await service.update(1, request);
       expect(result).toEqual(afterUpdated);
     });
 
@@ -196,9 +196,9 @@ describe('RecordsService', () => {
       }
 
       jest
-        .spyOn(recordsRepository, 'findOneBy')
+        .spyOn(repository, 'findOneBy')
         .mockImplementation(async () => beforeUpdated);
-      await expect(recordsService.update(1, request)).rejects.toThrow(
+      await expect(service.update(1, request)).rejects.toThrow(
         new HttpException('No changes to update', HttpStatus.BAD_REQUEST),
       );
     });
@@ -210,9 +210,9 @@ describe('RecordsService', () => {
         description: 'test-description',
       }
       jest
-        .spyOn(recordsRepository, 'findOneBy')
+        .spyOn(repository, 'findOneBy')
         .mockImplementation(async () => null);
-        await expect(recordsService.update(0, request)).rejects.toThrow(
+        await expect(service.update(0, request)).rejects.toThrow(
           NotFoundException,
         );
     });
@@ -224,13 +224,13 @@ describe('RecordsService', () => {
       const expected = { ...mockData1 };
   
       jest
-        .spyOn(recordsService, 'find')
+        .spyOn(service, 'find')
         .mockImplementation(async () => expected);
       jest
-        .spyOn(recordsRepository, 'remove')
+        .spyOn(repository, 'remove')
         .mockImplementation(async () => expected);
   
-      const result = await recordsService.remove(recordId);
+      const result = await service.remove(recordId);
       expect(result).toEqual(expected);
     });
   
@@ -238,10 +238,10 @@ describe('RecordsService', () => {
       const recordId = 0;
   
       jest
-        .spyOn(recordsService, 'find')
+        .spyOn(service, 'find')
         .mockImplementation(async () => null);
   
-      await expect(recordsService.remove(recordId)).rejects.toThrow(
+      await expect(service.remove(recordId)).rejects.toThrow(
         NotFoundException
       );
     });

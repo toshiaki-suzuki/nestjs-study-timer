@@ -26,7 +26,6 @@ const mockData2 = {
 describe('RecordsController', () => {
   let controller: RecordsController;
   let service: RecordsService;
-  let recordsRepository: Repository<Record>;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
