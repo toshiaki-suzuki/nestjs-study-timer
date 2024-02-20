@@ -6,8 +6,12 @@ import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UsersService } from './users.service';
 
+const mockUuid1 = '00000000-0000-0000-0000-000000000001';
+const mockUuid2 = '00000000-0000-0000-0000-000000000002';
+const notExistUuid = '00000000-0000-0000-0000-000000000000';
+
 const mockData1 = {
-  id: 1,
+  id: mockUuid1,
   name: 'test',
   email: 'test@example.com',
   password: 'password',
@@ -17,7 +21,7 @@ const mockData1 = {
   updatedAt: new Date().toISOString()
 };
 const mockData2 = {
-  id: 2,
+  id: mockUuid2,
   name: 'test2',
   email: 'test2@example.com',
   password: 'password2',
@@ -68,7 +72,7 @@ describe('UsersService', () => {
       jest
         .spyOn(repository, 'findOneBy')
         .mockImplementation(async () => expected);
-      const result = await service.find(1);
+      const result = await service.find(mockUuid1);
       expect(result).toEqual(expected);
     });
     
@@ -76,7 +80,7 @@ describe('UsersService', () => {
       jest
         .spyOn(repository, 'findOneBy')
         .mockImplementation(async () => null);
-        await expect(service.find(0)).rejects.toThrow(
+        await expect(service.find(notExistUuid)).rejects.toThrow(
           NotFoundException,
         );
     });
@@ -109,7 +113,7 @@ describe('UsersService', () => {
   describe('update', () => {
     it('200 Update all propaties', async () => {
       const beforeUpdated = {
-        id: 1,
+        id: mockUuid1,
         name: 'test',
         email: 'test@example.com',
         password: 'password',
@@ -120,7 +124,7 @@ describe('UsersService', () => {
       };
 
       const afterUpdated = {
-        id: 1,
+        id: mockUuid1,
         name: 'updated',
         email: 'updated@example.com',
         password: 'updatedpassword',
@@ -145,13 +149,13 @@ describe('UsersService', () => {
       jest
         .spyOn(repository, 'save')
         .mockImplementation(async () => afterUpdated);
-      const result = await service.update(1, request);
+      const result = await service.update(mockUuid1, request);
       expect(result).toEqual(afterUpdated);
     });
 
     it('200 Update a single propatiy', async () => {
       const beforeUpdated = {
-        id: 1,
+        id: mockUuid1,
         name: 'test',
         email: 'test@example.com',
         password: 'password',
@@ -162,7 +166,7 @@ describe('UsersService', () => {
       };
 
       const afterUpdated = {
-        id: 1,
+        id: mockUuid1,
         name: 'updated',
         email: 'test@example.com',
         password: 'password',
@@ -187,13 +191,13 @@ describe('UsersService', () => {
       jest
         .spyOn(repository, 'save')
         .mockImplementation(async () => afterUpdated);
-      const result = await service.update(1, request);
+      const result = await service.update(mockUuid1, request);
       expect(result).toEqual(afterUpdated);
     });
 
     it('400 Update no propatiy', async () => {
       const beforeUpdated = {
-        id: 1,
+        id: mockUuid1,
         name: 'test',
         email: 'test@example.com',
         password: 'password',
@@ -214,7 +218,7 @@ describe('UsersService', () => {
       jest
         .spyOn(repository, 'findOneBy')
         .mockImplementation(async () => beforeUpdated);
-      await expect(service.update(1, request)).rejects.toThrow(
+      await expect(service.update(mockUuid1, request)).rejects.toThrow(
         new HttpException('No changes to update', HttpStatus.BAD_REQUEST),
       );
     });
@@ -230,7 +234,7 @@ describe('UsersService', () => {
       jest
         .spyOn(repository, 'findOneBy')
         .mockImplementation(async () => null);
-        await expect(service.update(0, request)).rejects.toThrow(
+        await expect(service.update(notExistUuid, request)).rejects.toThrow(
           NotFoundException,
         );
     });
@@ -238,9 +242,7 @@ describe('UsersService', () => {
 
   describe('delete', () => {
     it('200 Delete a record', async () => {
-      const recordId = 1;
       const expected = { ...mockData1 };
-  
       jest
         .spyOn(service, 'find')
         .mockImplementation(async () => expected);
@@ -248,18 +250,16 @@ describe('UsersService', () => {
         .spyOn(repository, 'remove')
         .mockImplementation(async () => expected);
   
-      const result = await service.delete(recordId);
+      const result = await service.delete(mockUuid1);
       expect(result).toEqual(expected);
     });
   
     it('404 Not Found', async () => {
-      const recordId = 0;
-  
       jest
         .spyOn(service, 'find')
         .mockImplementation(async () => null);
   
-      await expect(service.delete(recordId)).rejects.toThrow(
+      await expect(service.delete(notExistUuid)).rejects.toThrow(
         NotFoundException
       );
     });

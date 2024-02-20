@@ -6,8 +6,12 @@ import { Repository } from 'typeorm';
 import UsersController from './users.controller';
 import { UsersService } from './users.service';
 
+const mockUuid1 = '00000000-0000-0000-0000-000000000001';
+const mockUuid2 = '00000000-0000-0000-0000-000000000002';
+const notExistUuid = '00000000-0000-0000-0000-000000000000';
+
 const mockData1 = {
-  id: 1,
+  id: mockUuid1,
   name: 'test',
   email: 'test@example.com',
   password: 'password',
@@ -17,7 +21,7 @@ const mockData1 = {
   updatedAt: new Date().toISOString()
 };
 const mockData2 = {
-  id: 2,
+  id: mockUuid2,
   name: 'test2',
   email: 'test2@example.com',
   password: 'password2',
@@ -69,7 +73,7 @@ describe('UsersController', () => {
       .spyOn(service, 'find')
       .mockResolvedValue(expectedRecord);
 
-      const result = await controller.find(1);
+      const result = await controller.find(mockUuid1);
       expect(result).toEqual(expectedRecord);
     });
 
@@ -83,7 +87,7 @@ describe('UsersController', () => {
         .spyOn(service, 'find')
         .mockRejectedValue(new NotFoundException(expectedResult.message));
   
-      await expect(controller.find(0)).rejects.toThrow(NotFoundException);
+      await expect(controller.find(notExistUuid)).rejects.toThrow(NotFoundException);
     });
   });
 
@@ -97,7 +101,7 @@ describe('UsersController', () => {
         birthday: new Date('1990-01-01').toISOString(),
       };
       const expectedUser: User = {
-        id: 1,
+        id: mockUuid1,
         ...createUserDto,
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
@@ -122,7 +126,7 @@ describe('UsersController', () => {
         birthday: new Date('2000-01-01').toISOString(),
       };
       const expected: User = {
-        id: 1,
+        id: mockUuid1,
         ...updateUserDto,
         createdAt: mockData1.createdAt,
         updatedAt: new Date().toISOString(),
@@ -132,7 +136,7 @@ describe('UsersController', () => {
         .spyOn(service, 'update')
         .mockResolvedValue(expected);
 
-      const result = await controller.update(1, updateUserDto);
+      const result = await controller.update(mockUuid1, updateUserDto);
       expect(result).toEqual(expected);
     });
 
@@ -153,7 +157,7 @@ describe('UsersController', () => {
         .spyOn(service, 'update')
         .mockRejectedValue(new NotFoundException(expectedResult.message));
 
-      await expect(controller.update(0, updateUserDto)).rejects.toThrow(NotFoundException);
+      await expect(controller.update(notExistUuid, updateUserDto)).rejects.toThrow(NotFoundException);
     });
   });
 
@@ -165,7 +169,7 @@ describe('UsersController', () => {
         .spyOn(service, 'delete')
         .mockResolvedValue(expected);
 
-      const result = await controller.delete(1);
+      const result = await controller.delete(mockUuid1);
       expect(result).toEqual(expected);
     });
 
@@ -179,7 +183,7 @@ describe('UsersController', () => {
         .spyOn(service, 'delete')
         .mockRejectedValue(new NotFoundException(expectedResult.message));
 
-      await expect(controller.delete(0)).rejects.toThrow(NotFoundException);
+      await expect(controller.delete(notExistUuid)).rejects.toThrow(NotFoundException);
     });
   });
 });

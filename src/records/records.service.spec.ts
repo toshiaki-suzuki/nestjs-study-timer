@@ -6,8 +6,12 @@ import { Repository } from 'typeorm';
 import { CreateRecordDto } from './dto/create-record.dto';
 import { RecordsService } from './records.service';
 
+const mockUuid1 = '00000000-0000-0000-0000-000000000001';
+const mockUuid2 = '00000000-0000-0000-0000-000000000002';
+const notExistUuid = '00000000-0000-0000-0000-000000000000';
+
 const mockData1 = {
-  id: 1,
+  id: mockUuid1,
   material: 'test-material',
   learningTime: 90,
   description: 'test-description',
@@ -15,7 +19,7 @@ const mockData1 = {
   updatedAt: new Date().toISOString(),
 };
 const mockData2 = {
-  id: 2,
+  id: mockUuid2,
   material: 'test-material2',
   learningTime: 90,
   description: 'test-description2',
@@ -61,7 +65,7 @@ describe('RecordsService', () => {
       jest
         .spyOn(repository, 'findOneBy')
         .mockImplementation(async () => expected);
-      const result = await service.find(1);
+      const result = await service.find(mockUuid1);
       expect(result).toEqual(expected);
     });
     
@@ -69,7 +73,7 @@ describe('RecordsService', () => {
       jest
         .spyOn(repository, 'findOneBy')
         .mockImplementation(async () => null);
-        await expect(service.find(0)).rejects.toThrow(
+        await expect(service.find(notExistUuid)).rejects.toThrow(
           NotFoundException,
         );
     });
@@ -100,7 +104,7 @@ describe('RecordsService', () => {
   describe('update', () => {
     it('200 Update all propaties', async () => {
       const beforeUpdated = {
-        id: 1,
+        id: mockUuid1,
         material: 'test-material',
         learningTime: 90,
         description: 'test-description',
@@ -109,7 +113,7 @@ describe('RecordsService', () => {
       };
 
       const afterUpdated = {
-        id: 1,
+        id: mockUuid1,
         material: 'updated-material',
         learningTime: 900,
         description: 'updated-description',
@@ -130,13 +134,13 @@ describe('RecordsService', () => {
       jest
         .spyOn(repository, 'save')
         .mockImplementation(async () => afterUpdated);
-      const result = await service.update(1, request);
+      const result = await service.update(mockUuid1, request);
       expect(result).toEqual(afterUpdated);
     });
 
     it('200 Update a single propatiy', async () => {
       const beforeUpdated = {
-        id: 1,
+        id: mockUuid1,
         material: 'test-material',
         learningTime: 90,
         description: 'test-description',
@@ -145,7 +149,7 @@ describe('RecordsService', () => {
       };
 
       const afterUpdated = {
-        id: 1,
+        id: mockUuid1,
         material: 'updated-material',
         learningTime: 90,
         description: 'test-description',
@@ -166,13 +170,13 @@ describe('RecordsService', () => {
       jest
         .spyOn(repository, 'save')
         .mockImplementation(async () => afterUpdated);
-      const result = await service.update(1, request);
+      const result = await service.update(mockUuid1, request);
       expect(result).toEqual(afterUpdated);
     });
 
     it('400 Update no propatiy', async () => {
       const beforeUpdated = {
-        id: 1,
+        id: mockUuid1,
         material: 'test-material',
         learningTime: 90,
         description: 'test-description',
@@ -181,7 +185,7 @@ describe('RecordsService', () => {
       };
 
       const afterUpdated = {
-        id: 1,
+        id: mockUuid1,
         material: 'test-material',
         learningTime: 90,
         description: 'test-description',
@@ -198,7 +202,7 @@ describe('RecordsService', () => {
       jest
         .spyOn(repository, 'findOneBy')
         .mockImplementation(async () => beforeUpdated);
-      await expect(service.update(1, request)).rejects.toThrow(
+      await expect(service.update(mockUuid1, request)).rejects.toThrow(
         new HttpException('No changes to update', HttpStatus.BAD_REQUEST),
       );
     });
@@ -212,7 +216,7 @@ describe('RecordsService', () => {
       jest
         .spyOn(repository, 'findOneBy')
         .mockImplementation(async () => null);
-        await expect(service.update(0, request)).rejects.toThrow(
+        await expect(service.update(notExistUuid, request)).rejects.toThrow(
           NotFoundException,
         );
     });
@@ -220,7 +224,6 @@ describe('RecordsService', () => {
   
   describe('remove', () => {
     it('200 Remove a record', async () => {
-      const recordId = 1;
       const expected = { ...mockData1 };
   
       jest
@@ -230,18 +233,17 @@ describe('RecordsService', () => {
         .spyOn(repository, 'remove')
         .mockImplementation(async () => expected);
   
-      const result = await service.remove(recordId);
+      const result = await service.remove(mockUuid1);
       expect(result).toEqual(expected);
     });
   
     it('404 Not Found', async () => {
-      const recordId = 0;
   
       jest
         .spyOn(service, 'find')
         .mockImplementation(async () => null);
   
-      await expect(service.remove(recordId)).rejects.toThrow(
+      await expect(service.remove(notExistUuid)).rejects.toThrow(
         NotFoundException
       );
     });
