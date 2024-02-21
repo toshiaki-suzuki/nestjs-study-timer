@@ -1,5 +1,6 @@
 import { HttpException, HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import * as bcrypt from 'bcrypt';
 import { User } from 'src/entities/user.entity';
 import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -22,12 +23,13 @@ export class UsersService {
   
   async create(createUserDto: CreateUserDto): Promise<User> {
     const { name, email, password, description, birthday } = createUserDto;
-    console.log(name, email, password, description, birthday);
+		const salt = await bcrypt.genSalt();
+    const hashedPassword = await bcrypt.hash(password, salt);
     
     const user = this.repository.create({
       name,
       email,
-      password,
+      password: hashedPassword,
       description,
       birthday,
       createdAt: new Date().toISOString(),
@@ -50,15 +52,6 @@ export class UsersService {
 		record.description = description ?? record.description;
 		record.birthday = birthday ?? record.birthday;
 		record.updatedAt = new Date().toISOString();
-	
-    console.log(
-      oldRecord.name === record.name &&
-			oldRecord.email === record.email &&
-			oldRecord.password === record.password &&
-			oldRecord.description === record.description &&
-			oldRecord.birthday === record.birthday 
-    );
-
 
 		// 更新する値がない場合は400エラーを返す
 		if (
