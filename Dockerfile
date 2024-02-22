@@ -1,3 +1,3 @@
 FROM node
-COPY . .
-RUN chmod +x ./scripts/entrypoint.sh
+COPY . /app
+WORKDIR /app
