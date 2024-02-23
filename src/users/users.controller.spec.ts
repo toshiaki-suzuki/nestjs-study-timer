@@ -18,7 +18,8 @@ const mockData1 = {
   description: 'Lorem ipsum',
   birthday: new Date('1990-01-01').toISOString(),
   createdAt: new Date().toISOString(),
-  updatedAt: new Date().toISOString()
+  updatedAt: new Date().toISOString(),
+  records: [],
 };
 const mockData2 = {
   id: mockUuid2,
@@ -28,7 +29,8 @@ const mockData2 = {
   description: 'Lorem ipsum2',
   birthday: new Date('1991-01-01').toISOString(),
   createdAt: new Date().toISOString(),
-  updatedAt: new Date().toISOString()
+  updatedAt: new Date().toISOString(),
+  records: [],
 };
 
 describe('UsersController', () => {
@@ -99,6 +101,7 @@ describe('UsersController', () => {
         password: 'password',
         description: 'Lorem ipsum',
         birthday: new Date('1990-01-01').toISOString(),
+        records: [],
       };
       const expectedUser: User = {
         id: mockUuid1,
@@ -124,6 +127,7 @@ describe('UsersController', () => {
         password: 'updatedpassword',
         description: 'updated description',
         birthday: new Date('2000-01-01').toISOString(),
+        records: [],
       };
       const expected: User = {
         id: mockUuid1,

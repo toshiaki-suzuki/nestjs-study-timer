@@ -18,7 +18,8 @@ const mockData1 = {
   description: 'Lorem ipsum',
   birthday: new Date('1990-01-01').toISOString(),
   createdAt: new Date().toISOString(),
-  updatedAt: new Date().toISOString()
+  updatedAt: new Date().toISOString(),
+  records: [],
 };
 const mockData2 = {
   id: mockUuid2,
@@ -28,7 +29,8 @@ const mockData2 = {
   description: 'Lorem ipsum2',
   birthday: new Date('1991-01-01').toISOString(),
   createdAt: new Date().toISOString(),
-  updatedAt: new Date().toISOString()
+  updatedAt: new Date().toISOString(),
+  records: []
 };
 
 describe('UsersService', () => {
@@ -120,7 +122,8 @@ describe('UsersService', () => {
         description: 'Lorem ipsum',
         birthday: new Date('1990-01-01').toISOString(),
         createdAt: '2021-01-01T00:00:00.000Z',
-        updatedAt: '2021-01-01T00:00:00.000Z'
+        updatedAt: '2021-01-01T00:00:00.000Z',
+        records: []
       };
 
       const afterUpdated = {
@@ -132,6 +135,7 @@ describe('UsersService', () => {
         birthday: new Date('2000-12-31').toISOString(),
         createdAt: beforeUpdated.createdAt,
         updatedAt: '2024-01-01T00:00:00.000Z',
+        records: []
       };
       
       const request: CreateUserDto = {
@@ -162,7 +166,8 @@ describe('UsersService', () => {
         description: 'Lorem ipsum',
         birthday: new Date('1990-01-01').toISOString(),
         createdAt: '2021-01-01T00:00:00.000Z',
-        updatedAt: '2021-01-01T00:00:00.000Z'
+        updatedAt: '2021-01-01T00:00:00.000Z',
+        records: []
       };
 
       const afterUpdated = {
@@ -174,6 +179,7 @@ describe('UsersService', () => {
         birthday: new Date('1990-01-01').toISOString(),
         createdAt: beforeUpdated.createdAt,
         updatedAt: '2024-01-01T00:00:00.000Z',
+        records: []
       };
       
       const request: CreateUserDto = {
@@ -204,7 +210,8 @@ describe('UsersService', () => {
         description: 'Lorem ipsum',
         birthday: '1990-01-01T00:00:00.000Z',
         createdAt: '2021-01-01T00:00:00.000Z',
-        updatedAt: '2021-01-01T00:00:00.000Z'
+        updatedAt: '2021-01-01T00:00:00.000Z',
+        records: []
       };
       
       const request: CreateUserDto = {

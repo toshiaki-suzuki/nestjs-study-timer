@@ -17,6 +17,7 @@ const mockData1 = {
   description: 'test-description',
   createdAt: new Date().toISOString(),
   updatedAt: new Date().toISOString(),
+  user: null,
 };
 const mockData2 = {
   id: mockUuid2,
@@ -25,6 +26,7 @@ const mockData2 = {
   description: 'test-description2',
   createdAt: new Date().toISOString(),
   updatedAt: new Date().toISOString(),
+  user: null,
 };
 
 describe('RecordsController', () => {
@@ -92,6 +94,7 @@ describe('RecordsController', () => {
         material: 'test-material',
         learningTime: 90,
         description: 'test-description',
+        user: null,
       };
       const expectedRecord: Record = {
         id: mockUuid1,
@@ -121,6 +124,7 @@ describe('RecordsController', () => {
         ...updateRecordDto,
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
+        user: null,
       };
 
       jest
