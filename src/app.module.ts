@@ -3,6 +3,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { DataSource } from 'typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { AuthModule } from './auth/auth.module';
 import { RecordsModule } from './records/records.module';
 import { UsersModule } from './users/users.module';
 
@@ -15,11 +16,12 @@ import { UsersModule } from './users/users.module';
       username: 'postgres',
       password: 'postgres',
       database: 'postgres',
-      synchronize: true, // true in only dev env
+      synchronize: true,
       autoLoadEntities: true,
     }),
     RecordsModule,
-    UsersModule
+    UsersModule,
+    AuthModule
   ],
   controllers: [AppController],
   providers: [AppService],
