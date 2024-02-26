@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { DataSource } from 'typeorm';
 import { AppController } from './app.controller';
@@ -19,9 +20,10 @@ import { UsersModule } from './users/users.module';
       synchronize: true,
       autoLoadEntities: true,
     }),
+    ConfigModule.forRoot(),
     RecordsModule,
     UsersModule,
-    AuthModule
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],

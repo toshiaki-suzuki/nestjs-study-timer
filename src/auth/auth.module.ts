@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -11,14 +12,20 @@ import { JwtStrategy } from './jwt.strategy';
   imports: [
     TypeOrmModule.forFeature([User]),
     PassportModule.register({ defaultStrategy: 'jwt' }),
-    JwtModule.register({
-      secret: 'secret123',
-      signOptions: { expiresIn: '3600' }
-    })
+    ConfigModule,
+    // モジュールの設定を動的に行うためにJwtModule.registerAsync()を使う
+    JwtModule.registerAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: async (configService: ConfigService) => ({
+        secret: configService.get<string>('JWT_SECRET_KEY'),
+        signOptions: { expiresIn: '3600s' },
+      }),
+    }),
   ],
   providers: [
     AuthService,
-    JwtStrategy
+    JwtStrategy,
   ],
   controllers: [AuthController]
 })

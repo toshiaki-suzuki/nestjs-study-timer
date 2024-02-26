@@ -36,3 +36,6 @@ lerna-debug.log*
 
 # dbクラスターのデータ
 docker/postgres/pgdata
+
+# 環境変数
+.env
