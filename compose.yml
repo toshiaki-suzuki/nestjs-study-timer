@@ -2,8 +2,8 @@ version: '3.8'
 services:
   app:
     build:
-      context: .
-      dockerfile: Dockerfile
+      context: ./Dockerfiles
+      dockerfile: app.Dockerfile
     container_name: api
     ports:
       - 3000:3000
@@ -12,7 +12,9 @@ services:
     depends_on:
       - postgres
   postgres:
-    image: postgres
+    build:
+      context: ./Dockerfiles
+      dockerfile: db.Dockerfile
     container_name: postgres
     ports:
       - 5432:5432
@@ -27,7 +29,9 @@ services:
     hostname: postgres
     user: root
   pgadmin:
-    image: dpage/pgadmin4
+    build:
+      context: ./Dockerfiles
+      dockerfile: pgadmin.Dockerfile
     ports:
       - 81:80
     environment:
