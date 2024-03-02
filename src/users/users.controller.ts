@@ -6,12 +6,12 @@ import { UsersService } from './users.service';
 
 
 @Controller('users')
+@UseGuards(JwtAuthGuard)
 export default class UsersController {
   constructor(private readonly service: UsersService) {}
 
   
   @Get()
-  @UseGuards(JwtAuthGuard)
   async findAll(): Promise<User[]> {
     return await this.service.findAll();
   }

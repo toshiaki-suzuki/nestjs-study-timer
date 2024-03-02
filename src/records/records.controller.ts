@@ -6,12 +6,15 @@ import {
   Param,
   Post,
   Put,
+  UseGuards,
 } from '@nestjs/common';
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { Record } from '../entities/record.entity';
 import { CreateRecordDto } from './dto/create-record.dto';
 import { RecordsService } from './records.service';
 
 @Controller('records')
+@UseGuards(JwtAuthGuard)
 export class RecordsController {
   constructor(private readonly recordsService: RecordsService) {}
 
