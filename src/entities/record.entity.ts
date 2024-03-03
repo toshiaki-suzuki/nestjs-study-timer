@@ -19,6 +19,9 @@ export class Record {
   user: User;
 
   @Column()
+  userId: string;
+
+  @Column()
   createdAt: string;
 
   @Column()

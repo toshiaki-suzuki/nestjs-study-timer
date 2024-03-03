@@ -14,4 +14,8 @@ export class CreateRecordDto {
 
     @IsString()
     description: string;
+
+    @IsString()
+    @IsNotEmpty()
+    userId: string;
 }

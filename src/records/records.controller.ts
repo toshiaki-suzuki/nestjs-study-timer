@@ -9,6 +9,8 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+import { User } from 'src/entities/user.entity';
+import { GetUser } from 'src/users/decorator/get-user.decorator';
 import { Record } from '../entities/record.entity';
 import { CreateRecordDto } from './dto/create-record.dto';
 import { RecordsService } from './records.service';
@@ -29,7 +31,11 @@ export class RecordsController {
   }
 
   @Post()
-  async create(@Body() createRecordDto: CreateRecordDto): Promise<Record> {
+  async create(
+    @Body() createRecordDto: CreateRecordDto,
+    @GetUser() user: User,
+  ): Promise<Record> {
+    createRecordDto.userId = user.id;
     return await this.recordsService.create(createRecordDto);
   }
 

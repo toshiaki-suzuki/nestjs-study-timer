@@ -23,11 +23,12 @@ export class RecordsService {
   }
 
 	async create(createRecordDto: CreateRecordDto): Promise<Record> {
-		const { material, learningTime, description } = createRecordDto;
+		const { material, learningTime, description, userId } = createRecordDto;
 		const record = this.repository.create({
 			material,
 			learningTime,
 			description,
+			userId,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
 		});
