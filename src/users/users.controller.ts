@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, ParseUUIDPipe, Post, Put, UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { User } from 'src/entities/user.entity';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -17,7 +17,7 @@ export default class UsersController {
   }
 
   @Get(':id')
-  async find(@Param('id') id: string): Promise<User> {
+  async find(@Param('id', ParseUUIDPipe) id: string): Promise<User> {
     return await this.service.find(id);
   }
   
@@ -28,14 +28,14 @@ export default class UsersController {
 
   @Put(':id')
   async update(
-    @Param('id') id: string,
+    @Param('id', ParseUUIDPipe) id: string,
     @Body() createUserDto: CreateUserDto,
   ): Promise<User> {
     return await this.service.update(id, createUserDto);
   }
 
   @Delete(':id')
-  async delete(@Param('id') id: string): Promise<User> {
+  async delete(@Param('id', ParseUUIDPipe) id: string): Promise<User> {
     return await this.service.delete(id);
   }
 }

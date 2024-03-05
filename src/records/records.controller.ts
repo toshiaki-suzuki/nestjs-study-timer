@@ -4,6 +4,7 @@ import {
   Delete,
   Get,
   Param,
+  ParseUUIDPipe,
   Post,
   Put,
   UseGuards,
@@ -26,7 +27,7 @@ export class RecordsController {
   }
 
   @Get(':id')
-  async find(@Param('id') id: string): Promise<Record> {
+  async find(@Param('id', ParseUUIDPipe) id: string): Promise<Record> {
     return await this.recordsService.find(id);
   }
 
@@ -41,14 +42,14 @@ export class RecordsController {
 
   @Put(':id')
   async update(
-    @Param('id') id: string,
+    @Param('id', ParseUUIDPipe) id: string,
     @Body() createRecordDto: CreateRecordDto,
   ): Promise<Record> {
     return await this.recordsService.update(id, createRecordDto);
   }
 
   @Delete(':id')
-  async delete(@Param('id') id: string): Promise<Record> {
+  async delete(@Param('id', ParseUUIDPipe) id: string): Promise<Record> {
     return await this.recordsService.remove(id);
   }
 }
