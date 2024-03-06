@@ -10,6 +10,17 @@ const mockUuid1 = '00000000-0000-0000-0000-000000000001';
 const mockUuid2 = '00000000-0000-0000-0000-000000000002';
 const notExistUuid = '00000000-0000-0000-0000-000000000000';
 
+const mockUser = {
+  id: mockUuid1,
+  name: 'test',
+  email: 'test@example.com',
+  password: 'password',
+  description: 'Lorem ipsum',
+  birthday: new Date('1990-01-01').toISOString(),
+  createdAt: new Date().toISOString(),
+  updatedAt: new Date().toISOString(),
+  records: [],
+};
 const mockData1 = {
   id: mockUuid1,
   material: 'test-material',
@@ -17,7 +28,8 @@ const mockData1 = {
   description: 'test-description',
   createdAt: new Date().toISOString(),
   updatedAt: new Date().toISOString(),
-  user: null,
+  user: mockUser,
+  userId: mockUser.id,
 };
 const mockData2 = {
   id: mockUuid2,
@@ -26,7 +38,8 @@ const mockData2 = {
   description: 'test-description2',
   createdAt: new Date().toISOString(),
   updatedAt: new Date().toISOString(),
-  user: null,
+  user: mockUser,
+  userId: mockUser.id,
 };
 
 describe('RecordsController', () => {
@@ -94,7 +107,8 @@ describe('RecordsController', () => {
         material: 'test-material',
         learningTime: 90,
         description: 'test-description',
-        user: null,
+        user: mockUser,
+        userId: mockUser.id,
       };
       const expectedRecord: Record = {
         id: mockUuid1,
@@ -107,7 +121,7 @@ describe('RecordsController', () => {
         .spyOn(service, 'create')
         .mockResolvedValue(expectedRecord);
 
-      const result = await controller.create(createRecordDto);
+      const result = await controller.create(createRecordDto, createRecordDto.user);
       expect(result).toEqual(expectedRecord);
     });
   });
@@ -118,13 +132,16 @@ describe('RecordsController', () => {
         material: 'test-material',
         learningTime: 90,
         description: 'test-description',
+        user: mockUser,
+        userId: mockUser.id,
       };
       const expectedRecord: Record = {
         id: mockUuid1,
         ...updateRecordDto,
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
-        user: null,
+        user: mockUser,
+        userId: mockUser.id,
       };
 
       jest
@@ -140,6 +157,8 @@ describe('RecordsController', () => {
         material: 'test-material',
         learningTime: 90,
         description: 'test-description',
+        user: mockUser,
+        userId: mockUser.id,
       };
       const expectedResult = {
         message: "Not Found",

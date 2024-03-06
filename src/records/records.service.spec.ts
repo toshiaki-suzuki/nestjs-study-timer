@@ -10,6 +10,17 @@ const mockUuid1 = '00000000-0000-0000-0000-000000000001';
 const mockUuid2 = '00000000-0000-0000-0000-000000000002';
 const notExistUuid = '00000000-0000-0000-0000-000000000000';
 
+const mockUser = {
+  id: mockUuid1,
+  name: 'test',
+  email: 'test@example.com',
+  password: 'password',
+  description: 'Lorem ipsum',
+  birthday: new Date('1990-01-01').toISOString(),
+  createdAt: new Date().toISOString(),
+  updatedAt: new Date().toISOString(),
+  records: [],
+};
 const mockData1 = {
   id: mockUuid1,
   material: 'test-material',
@@ -17,7 +28,8 @@ const mockData1 = {
   description: 'test-description',
   createdAt: new Date().toISOString(),
   updatedAt: new Date().toISOString(),
-  user: null,
+  user: mockUser,
+  userId: mockUser.id
 };
 const mockData2 = {
   id: mockUuid2,
@@ -26,7 +38,8 @@ const mockData2 = {
   description: 'test-description2',
   createdAt: new Date().toISOString(),
   updatedAt: new Date().toISOString(),
-  user: null,
+  user: mockUser,
+  userId: mockUser.id
 };
 
 describe('RecordsService', () => {
@@ -95,7 +108,9 @@ describe('RecordsService', () => {
       const request = {
         material: 'test-material',
         learningTime: 90,
-        description: 'test-description'
+        description: 'test-description',
+        user: mockUser,
+        userId: mockUser.id
       }
 
       const result = await service.create(request);
@@ -112,7 +127,8 @@ describe('RecordsService', () => {
         description: 'test-description',
         createdAt: '2021-01-01T00:00:00.000Z',
         updatedAt: '2021-01-01T00:00:00.000Z',
-        user: null,
+        user: mockUser,
+        userId: mockUser.id,
       };
 
       const afterUpdated = {
@@ -122,13 +138,15 @@ describe('RecordsService', () => {
         description: 'updated-description',
         createdAt: beforeUpdated.createdAt,
         updatedAt: '2024-01-01T00:00:00.000Z',
-        user: null,
+        user: mockUser,
+        userId: mockUser.id,
       };
       
       const request: CreateRecordDto = {
         material: afterUpdated.material,
         learningTime: afterUpdated.learningTime,
-        description: afterUpdated.description
+        description: afterUpdated.description,
+        userId: mockUser.id
       }
 
       jest
@@ -150,7 +168,8 @@ describe('RecordsService', () => {
         description: 'test-description',
         createdAt: '2021-01-01T00:00:00.000Z',
         updatedAt: '2021-01-01T00:00:00.000Z',
-        user: null,
+        user: mockUser,
+        userId: mockUser.id,
       };
 
       const afterUpdated = {
@@ -160,13 +179,15 @@ describe('RecordsService', () => {
         description: 'test-description',
         createdAt: beforeUpdated.createdAt,
         updatedAt: '2024-01-01T00:00:00.000Z',
-        user: null,
+        user: mockUser,
+        userId: mockUser.id
       };
       
       const request: CreateRecordDto = {
         material: afterUpdated.material,
         learningTime: afterUpdated.learningTime,
-        description: afterUpdated.description
+        description: afterUpdated.description,
+        userId: mockUser.id
       }
 
       jest
@@ -188,7 +209,8 @@ describe('RecordsService', () => {
         description: 'test-description',
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
-        user: null,
+        user: mockUser,
+        userId: mockUser.id
       };
 
       const afterUpdated = {
@@ -204,7 +226,8 @@ describe('RecordsService', () => {
       const request: CreateRecordDto = {
         material: afterUpdated.material,
         learningTime: afterUpdated.learningTime,
-        description: afterUpdated.description
+        description: afterUpdated.description,
+        userId: mockUser.id
       }
 
       jest
@@ -220,6 +243,7 @@ describe('RecordsService', () => {
         material: 'test-material',
         learningTime: 90,
         description: 'test-description',
+        userId: mockUser.id
       }
       jest
         .spyOn(repository, 'findOneBy')
