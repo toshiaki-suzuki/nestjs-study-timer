@@ -1,4 +1,4 @@
-import { NotFoundException } from '@nestjs/common';
+import { BadRequestException, NotFoundException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -9,6 +9,7 @@ import { RecordsService } from './records.service';
 const mockUuid1 = '00000000-0000-0000-0000-000000000001';
 const mockUuid2 = '00000000-0000-0000-0000-000000000002';
 const notExistUuid = '00000000-0000-0000-0000-000000000000';
+const invalidFormatUuid = 'invalid'
 
 const mockUser = {
   id: mockUuid1,
@@ -87,6 +88,20 @@ describe('RecordsController', () => {
       expect(result).toEqual(expectedRecord);
     });
 
+    it('400 Invalid UUID format', async () => {
+      const expectedResult = {
+        message: "Validation failed (uuid is expected)",
+        error: "Bad Request",
+        statusCode: 400
+      }
+  
+      jest
+        .spyOn(service, 'find')
+        .mockRejectedValue(new BadRequestException(expectedResult.message));
+  
+      await expect(controller.find(invalidFormatUuid)).rejects.toThrow(BadRequestException);
+    });
+
     it('404 Not Found', async () => {
       const expectedResult = {
         message: "Not Found",
@@ -152,6 +167,27 @@ describe('RecordsController', () => {
       expect(result).toEqual(expectedRecord);
     });
 
+    it('400 Invalid UUID format', async () => {    
+      const updateRecordDto = {
+        material: 'test-material',
+        learningTime: 90,
+        description: 'test-description',
+        user: mockUser,
+        userId: mockUser.id,
+      };  
+      const expectedResult = {
+        message: "Validation failed (uuid is expected)",
+        error: "Bad Request",
+        statusCode: 400,
+      }
+  
+      jest
+        .spyOn(service, 'update')
+        .mockRejectedValue(new BadRequestException(expectedResult.message));
+  
+      await expect(controller.update(invalidFormatUuid, updateRecordDto)).rejects.toThrow(BadRequestException);
+    });
+
     it('404 Not Found', async () => {
       const updateRecordDto = {
         material: 'test-material',
@@ -183,6 +219,20 @@ describe('RecordsController', () => {
 
       const result = await controller.delete(mockUuid1);
       expect(result).toEqual(expectedRecord);
+    });
+
+    it('400 Invalid UUID format', async () => {      
+      const expectedResult = {
+        message: "Validation failed (uuid is expected)",
+        error: "Bad Request",
+        statusCode: 400
+      }
+  
+      jest
+        .spyOn(service, 'remove')
+        .mockRejectedValue(new BadRequestException(expectedResult.message));
+  
+      await expect(controller.delete(invalidFormatUuid)).rejects.toThrow(BadRequestException);
     });
 
     it('404 Not Found', async () => {
