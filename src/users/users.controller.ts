@@ -1,12 +1,14 @@
 import { Body, Controller, Delete, Get, Param, ParseUUIDPipe, Post, Put, UseGuards } from '@nestjs/common';
+import { UseInterceptors } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { User } from 'src/entities/user.entity';
+import { LoggingInterceptor } from 'src/interceptor/logging.interceptor';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UsersService } from './users.service';
 
-
 @Controller('users')
 @UseGuards(JwtAuthGuard)
+@UseInterceptors(LoggingInterceptor)
 export default class UsersController {
   constructor(private readonly service: UsersService) {}
 

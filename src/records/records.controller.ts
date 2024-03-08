@@ -8,9 +8,11 @@ import {
   Post,
   Put,
   UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { User } from 'src/entities/user.entity';
+import { LoggingInterceptor } from 'src/interceptor/logging.interceptor';
 import { GetUser } from 'src/users/decorator/get-user.decorator';
 import { Record } from '../entities/record.entity';
 import { CreateRecordDto } from './dto/create-record.dto';
@@ -18,6 +20,7 @@ import { RecordsService } from './records.service';
 
 @Controller('records')
 @UseGuards(JwtAuthGuard)
+@UseInterceptors(LoggingInterceptor)
 export class RecordsController {
   constructor(private readonly recordsService: RecordsService) {}
 
