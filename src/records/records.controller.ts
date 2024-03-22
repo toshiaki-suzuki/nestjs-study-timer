@@ -25,8 +25,8 @@ export class RecordsController {
   constructor(private readonly recordsService: RecordsService) {}
 
   @Get()
-  async findAll(): Promise<Record[]> {
-    return await this.recordsService.findAll();
+  async findAll(@GetUser() user: User): Promise<Record[]> {
+    return await this.recordsService.findAll(user.id);
   }
 
   @Get(':id')

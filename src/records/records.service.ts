@@ -12,8 +12,10 @@ export class RecordsService {
     @InjectRepository(Record) private readonly repository: Repository<Record>,
   ) {}
 
-	async findAll(): Promise<Record[]> {
-		return await this.repository.find();
+	async findAll(userId: string): Promise<Record[]> {
+    const found =  await this.repository.findBy({ userId });
+		if (!found) throw new NotFoundException();
+    return found;
 	}
 
   async find(id: string): Promise<Record> {
@@ -40,14 +42,14 @@ export class RecordsService {
 		const { material, learningTime, description } = createRecordDto;
 		const record = await this.find(id);
 		if (!record) throw new NotFoundException();
-	
+
 		const oldRecord = { ...record }; // 既存のレコードをコピー
-	
+
 		record.material = material ?? record.material;
 		record.learningTime = learningTime ?? record.learningTime;
 		record.description = description ?? record.description;
 		record.updatedAt = new Date().toISOString();
-	
+
 		// 更新する値がない場合は400エラーを返す
 		if (
 			oldRecord.material === record.material &&
@@ -56,7 +58,7 @@ export class RecordsService {
 		) {
 			throw new HttpException('No changes to update', HttpStatus.BAD_REQUEST);
 		}
-	
+
 		await this.repository.save(record);
 		return record;
 	}
