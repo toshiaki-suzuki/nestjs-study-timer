@@ -71,7 +71,7 @@ describe('RecordsController', () => {
       .spyOn(service, 'findAll')
       .mockResolvedValue(expectedRecords);
 
-      const result = await controller.findAll();
+      const result = await controller.findAll(mockUser);
       expect(result).toEqual(expectedRecords);
     });
   });
@@ -94,11 +94,11 @@ describe('RecordsController', () => {
         error: "Bad Request",
         statusCode: 400
       }
-  
+
       jest
         .spyOn(service, 'find')
         .mockRejectedValue(new BadRequestException(expectedResult.message));
-  
+
       await expect(controller.find(invalidFormatUuid)).rejects.toThrow(BadRequestException);
     });
 
@@ -107,11 +107,11 @@ describe('RecordsController', () => {
         message: "Not Found",
         statusCode: 404
       };
-  
+
       jest
         .spyOn(service, 'find')
         .mockRejectedValue(new NotFoundException(expectedResult.message));
-  
+
       await expect(controller.find(notExistUuid)).rejects.toThrow(NotFoundException);
     });
   });
@@ -167,24 +167,24 @@ describe('RecordsController', () => {
       expect(result).toEqual(expectedRecord);
     });
 
-    it('400 Invalid UUID format', async () => {    
+    it('400 Invalid UUID format', async () => {
       const updateRecordDto = {
         material: 'test-material',
         learningTime: 90,
         description: 'test-description',
         user: mockUser,
         userId: mockUser.id,
-      };  
+      };
       const expectedResult = {
         message: "Validation failed (uuid is expected)",
         error: "Bad Request",
         statusCode: 400,
       }
-  
+
       jest
         .spyOn(service, 'update')
         .mockRejectedValue(new BadRequestException(expectedResult.message));
-  
+
       await expect(controller.update(invalidFormatUuid, updateRecordDto)).rejects.toThrow(BadRequestException);
     });
 
@@ -221,17 +221,17 @@ describe('RecordsController', () => {
       expect(result).toEqual(expectedRecord);
     });
 
-    it('400 Invalid UUID format', async () => {      
+    it('400 Invalid UUID format', async () => {
       const expectedResult = {
         message: "Validation failed (uuid is expected)",
         error: "Bad Request",
         statusCode: 400
       }
-  
+
       jest
         .spyOn(service, 'remove')
         .mockRejectedValue(new BadRequestException(expectedResult.message));
-  
+
       await expect(controller.delete(invalidFormatUuid)).rejects.toThrow(BadRequestException);
     });
 

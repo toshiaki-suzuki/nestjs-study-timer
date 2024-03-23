@@ -66,9 +66,9 @@ describe('RecordsService', () => {
       const expected = [ mockData1, mockData2 ];
 
       jest
-        .spyOn(repository, 'find')
+        .spyOn(repository, 'findBy')
         .mockImplementation(async () => expected);
-      const result = await service.findAll();
+      const result = await service.findAll(mockUser.id);
       expect(result).toEqual(expected);
     });
   });
@@ -83,7 +83,7 @@ describe('RecordsService', () => {
       const result = await service.find(mockUuid1);
       expect(result).toEqual(expected);
     });
-    
+
     it('404 Not Found', async () => {
       jest
         .spyOn(repository, 'findOneBy')
@@ -141,7 +141,7 @@ describe('RecordsService', () => {
         user: mockUser,
         userId: mockUser.id,
       };
-      
+
       const request: CreateRecordDto = {
         material: afterUpdated.material,
         learningTime: afterUpdated.learningTime,
@@ -182,7 +182,7 @@ describe('RecordsService', () => {
         user: mockUser,
         userId: mockUser.id
       };
-      
+
       const request: CreateRecordDto = {
         material: afterUpdated.material,
         learningTime: afterUpdated.learningTime,
@@ -222,7 +222,7 @@ describe('RecordsService', () => {
         updatedAt: new Date().toISOString(),
         user: null,
       };
-      
+
       const request: CreateRecordDto = {
         material: afterUpdated.material,
         learningTime: afterUpdated.learningTime,
@@ -253,28 +253,28 @@ describe('RecordsService', () => {
         );
     });
   });
-  
+
   describe('remove', () => {
     it('200 Remove a record', async () => {
       const expected = { ...mockData1 };
-  
+
       jest
         .spyOn(service, 'find')
         .mockImplementation(async () => expected);
       jest
         .spyOn(repository, 'remove')
         .mockImplementation(async () => expected);
-  
+
       const result = await service.remove(mockUuid1);
       expect(result).toEqual(expected);
     });
-  
+
     it('404 Not Found', async () => {
-  
+
       jest
         .spyOn(service, 'find')
         .mockImplementation(async () => null);
-  
+
       await expect(service.remove(notExistUuid)).rejects.toThrow(
         NotFoundException
       );
