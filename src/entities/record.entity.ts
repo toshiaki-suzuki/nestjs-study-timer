@@ -12,7 +12,7 @@ export class Record {
   @Column()
   learningTime: number;
 
-  @Column()
+  @Column({ nullable: true })
   description: string;
 
   @ManyToOne(() => User, (user) => user.records)
